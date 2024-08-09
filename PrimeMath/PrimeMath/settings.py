@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'PrimeMath.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'PrMath',
+        'USER': 'Luffy',
+        'PASSWORD': 'hhh123',
+        'HOST': '127.0.0.1',  # Or the IP address of the MySQL server
+        'PORT': '3306',        # Default MySQL port
     }
 }
 
