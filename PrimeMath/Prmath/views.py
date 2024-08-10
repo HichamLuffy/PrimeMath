@@ -5,6 +5,11 @@ from django.shortcuts import HttpResponse
 from django.contrib import messages
 from .models import User, Courses, Projects, Profile
 from .decorators import student_required, teacher_required
+from django.contrib.auth import authenticate, login as django_login
+from .serializers import ProfileSerializer
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 # Create your views here.
 
@@ -19,42 +24,50 @@ def teacher_dashboard(request):
     #return render(request, 'main.html')
 
 
-def Login(request):
-
-    return HttpResponse("SignUp")
-    #return render(request, 'main.html')
-
-def Register(request):
+@api_view(['POST'])
+def register_user(request):
     if request.method == 'POST':
-        username = request.Post['username']
-        email = request.POST['email']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
-        role = request.POST['role']
+        username = request.data['username']
+        email = request.data['email']
+        password1 = request.data['password1']
+        password2 = request.data['password2']
+        role = request.data['role']
+
         if password1 == password2:
             if User.objects.filter(username=username).exists() or User.objects.filter(email=email).exists():
-                messages.error(request, 'Username or email already exists')
-                return redirect('register')
+                return Response({'error': 'Username or email already exists'}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 user = User.objects.create_user(username=username, email=email, password=password1)
                 user.save()
 
-                user_model = User.objects.get(username=username)
                 if role == 'student':
-                    age = request.POST['age']
-                    current_study = request['current_study']
-                    new_profile = Profile.objects.create(user=user_model, role='student', age=age, current_study=current_study)
+                    age = request.data['age']
+                    current_study = request.data['current_study']
+                    new_profile = Profile.objects.create(user=user, role='student', age=age, current_study=current_study)
                 elif role == 'teacher':
-                    status = request.POST['status'] # Real teacher, degree holder, etc.
-                    teaching_experience = request.POST['teaching_experience']
-                    subjects_of_expertise = request.POST.getlist('subjects_of_expertise')
-                    certifications = request.POST['certifications']
-                    new_profile = Profile.objects.create(user=user_model, role='teacher', status = status, teaching_experience = teaching_experience, subjects_of_expertise = subjects_of_expertise, certifications = certifications)
+                    status = request.data['status']
+                    teaching_experience = request.data['teaching_experience']
+                    certifications = request.data['certifications']
+                    new_profile = Profile.objects.create(user=user, role='teacher', status=status, teaching_experience=teaching_experience, certifications=certifications)
+
                 new_profile.save()
-                messages.success(request, 'Registration successful')
-                return redirect('login')
-    return HttpResponse("Register")
+                return Response({'success': 'Registration successful'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'error': 'Passwords do not match'}, status=status.HTTP_400_BAD_REQUEST)
     #return render(request, 'main.html')
+
+@api_view(['POST'])
+def login_user(request):
+    username = request.data['username']
+    password = request.data['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        django_login(request, user)
+        profile = Profile.objects.get(user=user)
+        return Response({'username': user.username, 'role': profile.role}, status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 def Courses_page(request):
     return HttpResponse("courses")
