@@ -9,12 +9,14 @@ from .decorators import student_required, teacher_required
 # Create your views here.
 
 @student_required
-def student_dashboard(request, id):
-    course1 = Courses.objects.get(id=id)
-    return HttpResponse("PrimeMath %s" %course1.name)
+def student_dashboard(request):
+    return HttpResponse("PrimeMath teacher")
     #return render(request, 'main.html')
 
-
+@teacher_required
+def teacher_dashboard(request):
+    return HttpResponse("PrimeMath student")
+    #return render(request, 'main.html')
 
 
 def Login(request):
