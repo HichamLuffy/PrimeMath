@@ -40,12 +40,17 @@ PrimeMath is an interactive and comprehensive math education platform specifical
 - Courses like Trigonometry, Algebra, Calculus, and specialized topics like "Math for Programmers," each containing projects and tasks to apply what you learn.
 - Allows users to focus on specific areas of interest or need, providing depth in particular mathematical fields.
 
+### **9. Teacher Phases**
+- Student Interaction: Students can text teachers to ask for help, seek clarification, or get additional support on topics they are struggling with.
+- Teacher Contributions: Teachers have the ability to post new courses and projects, enriching the platform with more content and providing a diverse range of learning materials.
+
 ## **Getting Started**
 1. **Sign Up:** Create an account to start your learning journey.
 2. **Choose a Course:** Select a course based on your current skill level or interest.
-3. **Complete Tasks:** Engage with daily tasks, projects, and assessments.
+3. **Complete Projects:** Engage with daily tasks, projects, and assessments.
 4. **Track Progress:** Use the progress tracking and leveling system to monitor your improvement.
 5. **Collaborate:** Participate in peer reviews and learn from others.
+6. **Connect with Teachers:** Reach out to teachers for guidance and support.
 
 ## **Technology Stack**
 - **Frontend:** [React.js]
