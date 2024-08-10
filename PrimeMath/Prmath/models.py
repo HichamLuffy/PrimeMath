@@ -2,28 +2,27 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # User model is already provided by Django, no need to redefine it.
+class Subject(models.Model):
+    name = models.CharField(max_length=100)
 
-class Student(models.Model):
+    def __str__(self):
+        return self.name
+
+
+class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=200)
-    email = models.EmailField(unique=True)
-    studyAt = models.CharField(max_length=15, blank=True, null=True)
-    age = models.DateField(blank=True, null=True)
-    date_joined = models.DateTimeField(auto_now_add=True)
+    role = models.CharField(max_length=10)  # "student" or "teacher"
+    age = models.IntegerField(null=True, blank=True)
+    current_study = models.CharField(max_length=255, null=True, blank=True)
+    status = models.CharField(max_length=255, null=True, blank=True)  # For teachers
+    teaching_experience = models.IntegerField(null=True, blank=True)  # Years of experience
+    subjects_of_expertise = models.ManyToManyField(Subject, blank=True)  # Expertise in subjects
+    certifications = models.TextField(null=True, blank=True)  # Certifications or qualifications
 
     def __str__(self):
-        return self.full_name
+        return self.user.username
 
-class Teacher(models.Model):
-    name = models.CharField(max_length=200)
-    email = models.EmailField(unique=True)
-    insta = models.CharField(max_length=25, blank=True)
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
-    bio = models.TextField(blank=True, null=True)
-    date_joined = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return (self.name)
 
 class Courses(models.Model):
     name = models.CharField(max_length=200)
@@ -78,7 +77,7 @@ class Projects(models.Model):
     course = models.ForeignKey(Courses, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField()
-    teacher_owner = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
+    teacher_owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, limit_choices_to={'role': 'teacher'})
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     is_completed = models.BooleanField(default=False)
