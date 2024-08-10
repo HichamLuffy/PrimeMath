@@ -3,6 +3,28 @@ from django.contrib.auth.models import User
 
 # User model is already provided by Django, no need to redefine it.
 
+class Student(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=200)
+    email = models.EmailField(unique=True)
+    studyAt = models.CharField(max_length=15, blank=True, null=True)
+    age = models.DateField(blank=True, null=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.full_name
+
+class Teacher(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.EmailField(unique=True)
+    insta = models.CharField(max_length=25, blank=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return (self.name)
+
 class Courses(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
@@ -29,7 +51,16 @@ class Courses(models.Model):
         else:
             self.is_completed = False
         self.save()
-
+    
+    def update_enrollment_status(self):
+        """Updates the enrollment status of the course based on student enrollments."""
+        total_students = self.studentcourseenrollment_set.count()
+        completed_students = self.studentcourseenrollment_set.filter(completed_date__isnull=False).count()
+        if total_students > 0 and (completed_students / total_students) >= 0.7:
+            self.is_locked = True
+        else:
+            self.is_locked = False
+        self.save()
 
 class StudentCourseEnrollment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -47,11 +78,11 @@ class Projects(models.Model):
     course = models.ForeignKey(Courses, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField()
+    teacher_owner = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     is_completed = models.BooleanField(default=False)
     completed_date = models.DateTimeField(null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     difficulty_level = models.PositiveIntegerField(default=1)
     current_students = models.PositiveIntegerField(default=0)
     number_of_students_completed = models.PositiveIntegerField(default=0)
