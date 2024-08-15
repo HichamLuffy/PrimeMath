@@ -25,8 +25,9 @@ class Profile(models.Model):
 
 
 class Courses(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=100)
     description = models.TextField()
+    teacher_owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="courses", null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     is_featured = models.BooleanField(default=False)
@@ -112,8 +113,6 @@ class Tasks(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
     is_completed = models.BooleanField(default=False)
     completed_date = models.DateTimeField(null=True, blank=True)
-    due_date = models.DateTimeField(null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     difficulty_level = models.PositiveIntegerField(default=1)
     question = models.TextField()  # The question associated with the task
     options = models.JSONField()  # Store options as JSON, e.g., {"A": "Option 1", "B": "Option 2"}

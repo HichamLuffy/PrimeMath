@@ -1,12 +1,9 @@
-from django.urls import path
+from django.contrib import admin
+from django.urls import path, include
 from . import views
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
-    path('<int:id>', views.student_dashboard, name='main'),  # Main page route
-    path('api/login/', views.login_user, name='login_user'),
-    path('api/register/', views.register_user, name='register_user'),
-    path('Courses', views.Courses_page, name='Courses'),
-    path('Dashboard', views.Dashboard, name='Dashboard'),
-    path('Profile', views.Profile, name='Profile'),
-    path('Users', views.Users, name='Users'),
+    path("courses/", views.Courses_Create.as_view(), name="courses"),
+    path("courses/delete/<int:pk>/", views.Course_Delete.as_view(), name="delete-course"),
 ]
