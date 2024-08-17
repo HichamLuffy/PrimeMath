@@ -30,8 +30,6 @@ class Courses(models.Model):
     teacher_owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="courses", null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    is_featured = models.BooleanField(default=False)
-    featured_order = models.PositiveIntegerField(default=0)
     is_completed = models.BooleanField(default=False)  # Default should be False
     is_locked = models.BooleanField(default=False)
     lock_reason = models.CharField(max_length=200, blank=True)
@@ -51,27 +49,6 @@ class Courses(models.Model):
         else:
             self.is_completed = False
         self.save()
-    
-    def update_enrollment_status(self):
-        """Updates the enrollment status of the course based on student enrollments."""
-        total_students = self.studentcourseenrollment_set.count()
-        completed_students = self.studentcourseenrollment_set.filter(completed_date__isnull=False).count()
-        if total_students > 0 and (completed_students / total_students) >= 0.7:
-            self.is_locked = True
-        else:
-            self.is_locked = False
-        self.save()
-
-class StudentCourseEnrollment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
-    enrollment_date = models.DateTimeField(auto_now_add=True)
-    completed_date = models.DateTimeField(null=True, blank=True)
-    progress = models.PositiveIntegerField(default=0)  # Percentage completion
-    grade = models.CharField(max_length=10, blank=True)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.course.name}"
 
 
 class Projects(models.Model):

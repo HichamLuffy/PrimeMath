@@ -48,6 +48,9 @@ SIMPLE_JWT = {
 
 CORS_ALLOWED_CREDENTIALS = True
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+]
 # Application definition
 
 INSTALLED_APPS = [
