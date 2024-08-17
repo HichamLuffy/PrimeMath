@@ -12,7 +12,7 @@ function Form({ route, method }) {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const name = method === "login" ? "Login" : "Register";
+    const name = method === "login" ? "SIGN IN" : "Register";
 
     const handleSubmit = async (e) => {
         setLoading(true);
@@ -55,7 +55,7 @@ function Form({ route, method }) {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email"  // Add email input
+                    placeholder="Email"
                 />
             )}
             <input
