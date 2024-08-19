@@ -1,0 +1,88 @@
+.home-container {
+    display: flex;
+    height: 100vh;
+    background: linear-gradient(to right, #1c1c1c, #2c2c2c);
+  }
+  
+  .sidebar {
+    width: 20%;
+    background-color: #1c1c1c;
+    color: #e3ac72;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .sidebar .logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .sidebar nav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar nav ul li {
+    margin: 15px 0;
+  }
+  
+  .sidebar nav ul li a {
+    color: #e3ac72;
+    text-decoration: none;
+  }
+  
+  .sidebar .upcoming-events {
+    font-size: 14px;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 20px;
+    color: #ffffff;
+    background: url('./images/wallpaper.jpg') no-repeat center center;
+    background-size: cover;
+  }
+  
+  .user-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .user-header {
+    display: flex;
+    align-items: center;
+  }
+  
+  .avatar {
+    background-color: #e3ac72;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    margin-right: 20px;
+  }
+  
+  .current-course {
+    margin-top: 20px;
+  }
+  
+  .skills-chart {
+    margin-top: 40px;
+    /* Add your radar chart or skill visualization here */
+  }
+  
+  .logout-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.logout-button:hover {
+    background-color: #d32f2f;
+}

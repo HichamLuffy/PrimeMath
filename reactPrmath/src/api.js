@@ -20,4 +20,14 @@ api.interceptors.request.use(
   }
 );
 
+export const fetchCurrentUser = async () => {
+  try {
+    const response = await api.get('/api/current_user/');
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching current user:", error);
+    throw error;
+  }
+};
+
 export default api;

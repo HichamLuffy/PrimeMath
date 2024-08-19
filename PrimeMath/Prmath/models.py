@@ -11,7 +11,7 @@ class Subject(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.CharField(max_length=10)  # "student" or "teacher"
+    role = models.CharField(max_length=10, choices=[('student', 'Student'), ('teacher', 'Teacher')])
     age = models.IntegerField(null=True, blank=True)
     current_study = models.CharField(max_length=255, null=True, blank=True)
     status = models.CharField(max_length=255, null=True, blank=True)  # For teachers
@@ -23,10 +23,11 @@ class Profile(models.Model):
         return self.user.username
 
 
-
 class Courses(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
+    helper_links = models.TextField(blank=True)  # Could store links in a comma-separated format
+    score = models.PositiveIntegerField(default=0)
     teacher_owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="courses", null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
@@ -108,3 +109,25 @@ class Tasks(models.Model):
             self.is_completed = False
         self.save()
         self.project.update_completion_status()  # Update project status after task is checked
+
+class StudentProfile(models.Model):
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    points = models.PositiveIntegerField(default=0)
+    current_study = models.CharField(max_length=200, blank=True, null=True)
+    current_courses = models.ManyToManyField(Courses, blank=True)
+    completed_courses = models.ManyToManyField(Courses, related_name='completed_students', blank=True)
+    current_projects = models.ManyToManyField(Projects, blank=True)
+    skills = models.ManyToManyField(Subject, related_name='students', blank=True)
+
+    def __str__(self):
+        return self.user.username
+
+class TeacherProfile(models.Model):
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    points = models.PositiveIntegerField(default=0)
+    courses_taught = models.ManyToManyField(Courses, related_name='teachers', blank=True)
+    projects_created = models.ManyToManyField(Projects, related_name='teachers', blank=True)
+    skills = models.ManyToManyField(Subject, related_name='teachers', blank=True)
+
+    def __str__(self):
+        return self.user.username

@@ -1,7 +1,8 @@
+// Form.jsx
 import { useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import { ACCESS_TOKEN, REFRESH_TOKEN, USER_NAME, USER_ROLE} from "../constants";
 import "../styles/Form.css";
 import LoadingIndicator from './LoadingIndicator';
 
@@ -9,6 +10,7 @@ function Form({ route, method }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");  // Add email state
+    const [role, setRole] = useState("");  // Add role state
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -21,13 +23,15 @@ function Form({ route, method }) {
         try {
             const requestData = method === "login" 
                 ? { username, password } 
-                : { username, password, email };  // Include email if it's registration
+                : { username, password, email, role };  // Include email and role if it's registration
 
             const res = await api.post(route, requestData);
 
             if (method === "login") {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+                localStorage.setItem(USER_NAME, res.data.username);
+                localStorage.setItem(USER_ROLE, res.data.role);
                 navigate("/");
             } else {
                 navigate("/login");
@@ -50,13 +54,23 @@ function Form({ route, method }) {
                 placeholder="Username"
             />
             {method === "register" && (
-                <input
-                    className="form-input"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email"
-                />
+                <>
+                    <input
+                        className="form-input"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Email"
+                    />
+                    <select
+                        className="form-input"
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                    >
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                    </select>
+                </>
             )}
             <input
                 className="form-input"
