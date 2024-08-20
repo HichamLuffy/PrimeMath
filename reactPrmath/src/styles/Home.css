@@ -1,88 +1,126 @@
+@import url('https://fonts.cdnfonts.com/css/play-pretend');
+
 .home-container {
-    display: flex;
-    height: 100vh;
-    background: linear-gradient(to right, #1c1c1c, #2c2c2c);
-  }
-  
-  .sidebar {
-    width: 20%;
-    background-color: #1c1c1c;
-    color: #e3ac72;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  .sidebar .logo {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .sidebar nav ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .sidebar nav ul li {
-    margin: 15px 0;
-  }
-  
-  .sidebar nav ul li a {
-    color: #e3ac72;
-    text-decoration: none;
-  }
-  
-  .sidebar .upcoming-events {
-    font-size: 14px;
-  }
-  
-  .main-content {
-    flex: 1;
-    padding: 20px;
-    color: #ffffff;
-    background: url('./images/wallpaper.jpg') no-repeat center center;
-    background-size: cover;
-  }
-  
-  .user-info {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .user-header {
-    display: flex;
-    align-items: center;
-  }
-  
-  .avatar {
-    background-color: #e3ac72;
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    margin-right: 20px;
-  }
-  
-  .current-course {
-    margin-top: 20px;
-  }
-  
-  .skills-chart {
-    margin-top: 40px;
-    /* Add your radar chart or skill visualization here */
-  }
-  
-  .logout-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(to right, #1c1c1c, #2c2c2c);
+}
+
+.sidebar {
+  width: 20%;
+  background-color: #1c1c1c;
+  color: #E5B174;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar .logo {
+  font-size: 34px;
+  font-family: 'Play Pretend', sans-serif;
+}
+
+.sidebar nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  margin: 15px 0;
+}
+
+.sidebar nav ul li a {
+  color: #e3ac72;
+  text-decoration: none;
+}
+
+.sidebar nav ul li a:hover {
+  color: #ffffff;
+}
+
+.sidebar .upcoming-events {
+  font-size: 14px;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  color: #ffffff;
+  background: url('./images/wallpaper.jpg') no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+
+.main-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.main-content > * {
+  position: relative;
+  z-index: 2;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+}
+
+.user-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  background-color: #e3ac72;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  margin-right: 20px;
+}
+
+.user-details h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.user-details p {
+  margin: 5px 0;
+}
+
+.current-course {
+  margin-top: 20px;
+}
+
+.skills-chart {
+  margin-top: 40px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+}
+
+.logout-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 .logout-button:hover {
-    background-color: #d32f2f;
+  background-color: #d32f2f;
 }

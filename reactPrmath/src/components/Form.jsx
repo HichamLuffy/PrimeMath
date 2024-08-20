@@ -10,7 +10,7 @@ function Form({ route, method }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");  // Add email state
-    const [role, setRole] = useState("");  // Add role state
+    const [role, setRole] = useState("student");  // Add role state
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -24,6 +24,8 @@ function Form({ route, method }) {
             const requestData = method === "login" 
                 ? { username, password } 
                 : { username, password, email, role };  // Include email and role if it's registration
+            
+            console.log("Submitting: ", requestData);
 
             const res = await api.post(route, requestData);
 
@@ -37,7 +39,7 @@ function Form({ route, method }) {
                 navigate("/login");
             }
         } catch (error) {
-            alert(error);
+            alert(`Error: ${error.response ? error.response.data : error.message}`);
         } finally {
             setLoading(false);
         }

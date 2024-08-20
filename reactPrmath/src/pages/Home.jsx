@@ -37,6 +37,7 @@ function Home() {
         localStorage.clear();
         navigate('/login'); // Ensure navigate is called here
     };
+
     if (loading) {
         return <LoadingIndicator />;
     }
@@ -45,9 +46,10 @@ function Home() {
         <div className="home-container">
             {/* Sidebar */}
             <div className="sidebar">
-                <h1 className="logo">PRIMEMATH</h1>
+                <h1 className="logo">PRIME MATH</h1>
                 <nav>
                     <ul>
+                        <li><Link to="/">Menu</Link></li>
                         <li><Link to="/courses">Courses</Link></li>
                         <li><Link to="/dashboard">Dashboard</Link></li>
                         <li><Link to="/profile">Profile</Link></li>
