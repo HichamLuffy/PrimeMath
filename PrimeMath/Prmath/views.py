@@ -61,33 +61,35 @@ class CreateUserView(generics.CreateAPIView):
 
 class Courses_Create(generics.ListCreateAPIView):
     serializer_class = CoursesSerializer
-    permission_classes = [IsAuthenticated] #? you can't pass to this root until you are authenticated
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Courses.objects.all()
 
     def get(self, request):
-        user = request.user
-        profile = user.profile
-        role = profile.role
-        if role == 'student':
-            student_profile = StudentProfile.objects.get(profile=profile)
-            role_data = {'role': role}
-        elif role == 'teacher':
-            teacher_profile = TeacherProfile.objects.get(profile=profile)
-            role_data = {'role': role}
-        else:
-            role_data = {'role': 'unknown'}
-
-        user_data = {
-            'username': user.username,
-            'email': user.email,
-            'profile': role_data
-        }
-        return Response(user_data)
+        courses = self.get_queryset()
+        serialized_courses = CoursesSerializer(courses, many=True)
+        return Response(serialized_courses.data)
 
     def perform_create(self, serializer):
         if serializer.is_valid():
             serializer.save(teacher_owner=self.request.user)
         else:
             print(serializer.errors)
+
+class JoinCourseView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, course_id):
+        try:
+            course = Courses.objects.get(id=course_id)
+            student_profile = request.user.profile.studentprofile
+            student_profile.current_courses.add(course)
+            course.number_of_students_in_course += 1
+            course.save()
+            return Response({"message": "Successfully joined the course"}, status=status.HTTP_200_OK)
+        except Courses.DoesNotExist:
+            return Response({"error": "Course not found"}, status=status.HTTP_404_NOT_FOUND)
 
 class Course_Delete(generics.DestroyAPIView):
     serializer_class = CoursesSerializer

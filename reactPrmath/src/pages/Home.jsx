@@ -44,29 +44,9 @@ function Home() {
 
     return (
         <div className="home-container">
-            {/* Sidebar */}
-            <div className="sidebar">
-                <h1 className="logo">PRIME MATH</h1>
-                <nav>
-                    <ul>
-                        <li><Link to="/">Menu</Link></li>
-                        <li><Link to="/courses">Courses</Link></li>
-                        <li><Link to="/dashboard">Dashboard</Link></li>
-                        <li><Link to="/profile">Profile</Link></li>
-                        <li><Link to="/about">About</Link></li>
-                    </ul>
-                </nav>
-                <div className="upcoming-events">
-                    <h2>Upcoming Events</h2>
-                    <ul>
-                        <li>Discord night 20:30 11/8</li>
-                        <li>ALGORITHM session 9:00 11/10</li>
-                    </ul>
-                </div>
-            </div>
             <div className="main-content">
                 <div className="user-info">
-                    <div className="user-heade">
+                    <div className="user-header">
                         <img src={avatarImage} className="avatar" alt="User Avatar" />
                         <div className="user-details">
                             <h2>{userName}</h2>
@@ -75,7 +55,7 @@ function Home() {
                             <p>Points: 50</p>
                         </div>
                     </div>
-                    <div className="current-cour">
+                    <div className="current-course">
                         <h3>Current Course: {currentCourse}</h3>
                         <ul>
                             {currentProjects.map((project, index) => (
@@ -86,7 +66,7 @@ function Home() {
                 </div>
                 <div className="skills-chart">
                     <h3>Skills</h3>
-                {/* Include a radar chart or similar visualization here */}
+                    {/* Include a radar chart or similar visualization here */}
                 </div>
                 {loading && <LoadingIndicator />}
                 <button onClick={handleLogout} className="logout-button">Logout</button>

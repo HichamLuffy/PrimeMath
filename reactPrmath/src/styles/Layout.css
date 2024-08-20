@@ -1,0 +1,41 @@
+/* Layout.css */
+.layout-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .layout-container .sidebar {
+    width: var(--sidebar-width, 10%); /* Use CSS variable for width */
+    background-color: #1c1c1c;
+    color: #E5B174;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: width 0.3s ease; /* Smooth transition */
+  }
+  
+  .layout-container .main-content {
+    flex: 1;
+    padding: 20px;
+    color: #ffffff;
+    background: url('./images/wallpaper.jpg') no-repeat center center;
+    background-size: cover;
+    position: relative;
+  }
+  
+  .layout-container .main-content::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  .layout-container .main-content > * {
+    position: relative;
+    z-index: 2;
+  }
