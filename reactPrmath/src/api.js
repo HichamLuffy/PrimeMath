@@ -30,4 +30,20 @@ export const fetchCurrentUser = async () => {
   }
 };
 
+const token = localStorage.getItem(ACCESS_TOKEN);
+
+const config = {
+    headers: {
+        'Authorization': `Bearer ${token}`
+    }
+};
+
+try {
+    const res = await api.post("/api/teacher-profile/", requestData, config);
+    // Handle success
+} catch (error) {
+    console.error("Error updating teacher profile:", error);
+    alert(`Error: ${error.response ? error.response.data : error.message}`);
+}
+
 export default api;

@@ -10,6 +10,8 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import About from './pages/about';
 import Layout from "./components/Layout";
+import CourseDetail from "./pages/CourseDetail"
+import TeacherProfileForm from "./components/TeacherProfileForm"
 
 function Logout() {
   localStorage.clear()
@@ -38,6 +40,7 @@ function App() {
           />
           <Route path="/home" element={<Home />} />
           <Route path="/courses" element={<Courses />} />
+          <Route path="/courses/:courseId" element={<CourseDetail />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<About />} />
@@ -45,6 +48,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
+        <Route path="/teacher-profile-form" element={<TeacherProfileForm />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

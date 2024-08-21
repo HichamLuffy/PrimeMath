@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import '../styles/Courses.css';
 
@@ -6,6 +7,7 @@ const Courses = () => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [userCourses, setUserCourses] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -21,8 +23,8 @@ const Courses = () => {
 
         const fetchUserCourses = async () => {
             try {
-                const response = await api.get('/api/user-courses/');
-                setUserCourses(response.data);
+                const response = await api.get('/api/current_user/');
+                setUserCourses(response.data.profile.student_profile.current_courses || []);
             } catch (error) {
                 console.error('Error fetching user courses:', error);
             }
@@ -35,22 +37,20 @@ const Courses = () => {
     const handleJoinCourse = async (courseId) => {
         try {
             const response = await api.post(`/courses/join/${courseId}/`);
-            // Update the course in the local state
-            const updatedCourses = courses.map(course => 
-                course.id === courseId 
+            const updatedCourses = courses.map(course =>
+                course.id === courseId
                     ? { ...course, is_active: true, number_of_students_in_course: course.number_of_students_in_course + 1 }
                     : course
             );
             setCourses(updatedCourses);
-            // Add the course to the user's joined courses
             setUserCourses([...userCourses, courseId]);
         } catch (error) {
             console.error('Error joining course:', error);
         }
     };
 
-    const handleCourseClick = (courseId, courseName) => {
-        history.push(`/courses/${courseId}/${courseName}`);
+    const handleCourseClick = (courseId) => {
+        navigate(`/courses/${courseId}`);
     };
 
     if (loading) return <div>Loading...</div>;
@@ -61,14 +61,14 @@ const Courses = () => {
             <ul>
                 {courses.map((course) => (
                     <li key={course.id}>
-                        <span 
-                            style={{ cursor: course.is_active ? 'pointer' : 'default', textDecoration: course.is_active ? 'underline' : 'none' }}
-                            onClick={course.is_active ? () => handleCourseClick(course.id, course.name) : undefined}
+                        <span
+                            style={{ cursor: 'pointer', textDecoration: course.is_active ? 'underline' : 'none' }}
+                            onClick={() => handleCourseClick(course.id)}
                         >
                             {course.name} - Active: {course.is_active ? "Yes" : "No"} - Students: {course.number_of_students_in_course}
                         </span>
-                        {(!userCourses.includes(course.id)) && (
-                            <button onClick={() => handleJoinCourse(course.id)} disabled={course.is_active}>
+                        {(!course.is_active) && (
+                            <button onClick={() => handleJoinCourse(course.id)}>
                                 Join
                             </button>
                         )}

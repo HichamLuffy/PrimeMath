@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+
 
 # User model is already provided by Django, no need to redefine it.
 class Subject(models.Model):
@@ -56,7 +58,7 @@ class Projects(models.Model):
     course = models.ForeignKey(Courses, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField()
-    teacher_owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, limit_choices_to={'role': 'teacher'})
+    teacher_owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True, limit_choices_to={'role': 'teacher'})
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     is_completed = models.BooleanField(default=False)
@@ -120,7 +122,27 @@ class StudentProfile(models.Model):
     skills = models.ManyToManyField(Subject, related_name='students', blank=True)
 
     def __str__(self):
-        return self.user.username
+        return self.profile.user.username
+
+    def join_course(self, course):
+        """Add a course to the student's current courses if not already enrolled."""
+        if not self.current_courses.filter(id=course.id).exists():
+            self.current_courses.add(course)
+            course.number_of_students_in_course += 1
+            course.save()
+        else:
+            raise ValidationError("You are already enrolled in this course.")
+
+    def complete_course(self, course):
+        """Mark the course as completed and move it from current to completed courses."""
+        if self.current_courses.filter(id=course.id).exists():
+            self.current_courses.remove(course)
+            self.completed_courses.add(course)
+            course.number_of_students_completed += 1
+            course.save()
+        else:
+            raise ValidationError("You are not enrolled in this course.")
+
 
 class TeacherProfile(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
@@ -130,4 +152,4 @@ class TeacherProfile(models.Model):
     skills = models.ManyToManyField(Subject, related_name='teachers', blank=True)
 
     def __str__(self):
-        return self.user.username
+        return self.profile.user.username

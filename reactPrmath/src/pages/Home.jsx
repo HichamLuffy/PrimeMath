@@ -9,12 +9,10 @@ function Home() {
     const [userName, setUserName] = useState("");
     const [loading, setLoading] = useState(true);
     const [role, setRole] = useState("");
-    const navigate = useNavigate(); // Ensure useNavigate is called here
-    const currentCourse = 'Trigonometry';
-    const currentProjects = [
-        'Understanding Basic Trigonometric Functions',
-        'Solving Right Triangles',
-    ];
+    const [points, setPoints] = useState(0);
+    const [currentCourses, setCurrentCourses] = useState([]);
+    const [currentProjects, setCurrentProjects] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.title = "Home Page";
@@ -22,7 +20,10 @@ function Home() {
             try {
                 const user = await fetchCurrentUser();
                 setUserName(user.username);
-                setRole(user.profile.role);
+                setRole(user.role);
+                setPoints(user.points);
+                setCurrentCourses(user.current_courses || []);
+                setCurrentProjects(user.current_projects || []);
             } catch (error) {
                 console.error("Failed to fetch user:", error);
             } finally {
@@ -35,7 +36,7 @@ function Home() {
 
     const handleLogout = () => {
         localStorage.clear();
-        navigate('/login'); // Ensure navigate is called here
+        navigate('/login');
     };
 
     if (loading) {
@@ -51,15 +52,22 @@ function Home() {
                         <div className="user-details">
                             <h2>{userName}</h2>
                             <p>You are: {role}</p>
-                            <p> 5 - 10%</p>
-                            <p>Points: 50</p>
+                            <p>Points: {points}</p>
                         </div>
                     </div>
                     <div className="current-course">
-                        <h3>Current Course: {currentCourse}</h3>
+                        <h3>Current Courses:</h3>
                         <ul>
-                            {currentProjects.map((project, index) => (
-                                <li key={index}>{project}</li>
+                            {currentCourses.map((course) => (
+                                <li key={course.id}>{course.name}</li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div className="current-projects">
+                        <h3>Current Projects:</h3>
+                        <ul>
+                            {currentProjects.map((project) => (
+                                <li key={project.id}>{project.title}</li>
                             ))}
                         </ul>
                     </div>
@@ -68,7 +76,6 @@ function Home() {
                     <h3>Skills</h3>
                     {/* Include a radar chart or similar visualization here */}
                 </div>
-                {loading && <LoadingIndicator />}
                 <button onClick={handleLogout} className="logout-button">Logout</button>
             </div>
         </div>
