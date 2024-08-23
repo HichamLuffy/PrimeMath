@@ -39,6 +39,10 @@ function Home() {
         navigate('/login');
     };
 
+    const handleCourseClick = (courseId) => {
+        navigate(`/courses/${courseId}`);
+    };
+
     if (loading) {
         return <LoadingIndicator />;
     }
@@ -59,7 +63,13 @@ function Home() {
                         <h3>Current Courses:</h3>
                         <ul>
                             {currentCourses.map((course) => (
-                                <li key={course.id}>{course.name}</li>
+                                <li 
+                                key={course.id} 
+                                className="course-item"
+                                onClick={() => handleCourseClick(course.id)}
+                                >
+                                    {course.name}
+                                </li>
                             ))}
                         </ul>
                     </div>
@@ -67,7 +77,7 @@ function Home() {
                         <h3>Current Projects:</h3>
                         <ul>
                             {currentProjects.map((project) => (
-                                <li key={project.id}>{project.title}</li>
+                                <li key={project.id} className="project-item">{project.title}</li>
                             ))}
                         </ul>
                     </div>

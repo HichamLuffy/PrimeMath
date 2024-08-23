@@ -6,51 +6,25 @@
   background: linear-gradient(to right, #1c1c1c, #2c2c2c);
 }
 
-.sidebar {
-  width: 20%;
-  background-color: #1c1c1c;
-  color: #E5B174;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: width 0.3s ease; /* Add this line for smooth transition */
-}
-
-.sidebar .logo {
-  font-size: 34px;
-  font-family: 'Play Pretend', sans-serif;
-}
-
-.sidebar nav ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.sidebar nav ul li {
-  margin: 15px 0;
-}
-
-.sidebar nav ul li a {
-  color: #e3ac72;
-  text-decoration: none;
-}
-
-.sidebar nav ul li a:hover {
-  color: #ffffff;
-}
-
-.sidebar .upcoming-events {
-  font-size: 14px;
-}
-
 .main-content {
   flex: 1;
-  padding: 20px;
+  padding: 40px;
   color: #ffffff;
   background: url('./images/wallpaper.jpg') no-repeat center center;
   background-size: cover;
   position: relative;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .main-content::before {
@@ -72,9 +46,17 @@
 .user-info {
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 10px;
+  padding: 30px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: slideInLeft 1s ease-in-out;
+}
+
+@keyframes slideInLeft {
+  to {
+    opacity: 1;
+}
 }
 
 .user-header {
@@ -86,42 +68,65 @@
 .avatar {
   background-color: #e3ac72;
   border-radius: 50%;
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   margin-right: 20px;
+  box-shadow: 0 0 15px rgba(227, 172, 114, 0.6);
 }
 
 .user-details h2 {
   margin: 0;
-  font-size: 24px;
+  font-size: 28px;
+  color: #E5B174;
 }
 
 .user-details p {
   margin: 5px 0;
 }
 
-.current-course {
-  margin-top: 20px;
+.current-course, .current-projects {
+  margin-top: 30px;
+}
+
+.course-item, .project-item {
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 5px 0;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.course-item:hover, .project-item:hover {
+  color: #A67C52; /* Muted Copper */
+  transform: scale(1.05);
 }
 
 .skills-chart {
   margin-top: 40px;
   padding: 20px;
   background: rgba(0, 0, 0, 0.7);
-  border-radius: 10px;
+  border-radius: 15px;
+  animation: slideInRight 1s ease-in-out;
+}
+
+@keyframes slideInRight {
+  to {
+    opacity: 1;
+}
 }
 
 .logout-button {
-  margin-top: 20px;
-  padding: 10px 20px;
+  margin-top: 30px;
+  padding: 15px 30px;
   background-color: #f44336;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 18px;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .logout-button:hover {
   background-color: #d32f2f;
+  transform: scale(1.1);
 }

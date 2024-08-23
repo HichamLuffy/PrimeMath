@@ -10,8 +10,11 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem(ACCESS_TOKEN);
+    console.log("Token retrieved:", token); // Log the token
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    } else {
+        console.warn("No token found in localStorage");
     }
     return config;
   },
@@ -30,20 +33,15 @@ export const fetchCurrentUser = async () => {
   }
 };
 
-const token = localStorage.getItem(ACCESS_TOKEN);
-
-const config = {
-    headers: {
-        'Authorization': `Bearer ${token}`
-    }
+export const updateTeacherProfile = async (profileData) => {
+  try {
+    const response = await api.post("/teacher-profile/", profileData);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating teacher profile:", error);
+    throw error;
+  }
 };
 
-try {
-    const res = await api.post("/api/teacher-profile/", requestData, config);
-    // Handle success
-} catch (error) {
-    console.error("Error updating teacher profile:", error);
-    alert(`Error: ${error.response ? error.response.data : error.message}`);
-}
 
 export default api;

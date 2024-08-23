@@ -12,6 +12,8 @@ import About from './pages/about';
 import Layout from "./components/Layout";
 import CourseDetail from "./pages/CourseDetail"
 import TeacherProfileForm from "./components/TeacherProfileForm"
+import TeacherDashboard from "./components/TeacherDashboard"
+import ProjectDetail from "./pages/ProjectDetail"
 
 function Logout() {
   localStorage.clear()
@@ -41,6 +43,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/:courseId" element={<CourseDetail />} />
+          <Route path="/projects/:projectId" component={ProjectDetail} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<About />} />
@@ -50,6 +53,39 @@ function App() {
         <Route path="/register" element={<RegisterAndLogout />} />
         <Route path="/teacher-profile-form" element={<TeacherProfileForm />} />
         <Route path="*" element={<NotFound />} />
+        {/* Protected Routes */}
+        <Route
+            path="dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="teacher-dashboard"
+            element={
+              <ProtectedRoute>
+                <TeacherDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="edit-teacher-profile"
+            element={
+              <ProtectedRoute>
+                <TeacherProfileForm />
+              </ProtectedRoute>
+            }
+          />
       </Routes>
     </BrowserRouter>
   );

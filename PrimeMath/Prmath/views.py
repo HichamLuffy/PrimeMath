@@ -3,7 +3,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.shortcuts import HttpResponse
 from django.contrib import messages
-from .models import Courses, Projects, Profile, StudentProfile, TeacherProfile, Subject
+from .models import Courses, Projects, Profile, StudentProfile, TeacherProfile, Subject, Tasks
 from .decorators import student_required, teacher_required
 from django.contrib.auth import authenticate, login as django_login
 from .serializers import UserSerializer, CoursesSerializer, UserProfileSerializer, ProfileSerializer
@@ -73,8 +73,6 @@ class TeacherProfileUpdateView(UpdateAPIView):
         profile = self.get_object()
 
         # Update profile with data
-        profile.profile.age = profile_data.get('age', profile.profile.age)
-        profile.profile.status = profile_data.get('status', profile.profile.status)
         profile.profile.teaching_experience = profile_data.get('teaching_experience', profile.profile.teaching_experience)
         profile.profile.certifications = profile_data.get('certifications', profile.profile.certifications)
 
@@ -88,6 +86,27 @@ class TeacherProfileUpdateView(UpdateAPIView):
         profile.profile.save()
         serializer.save()
 
+class TeacherDashboardView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        if not hasattr(user.profile, 'teacherprofile'):
+            return Response({"error": "Not authorized"}, status=403)
+
+        teacher_profile = user.profile.teacherprofile
+        students = StudentProfile.objects.all().values('profile__user__username', 'profile__user__id')
+
+        profile_data = {
+            'teaching_experience': teacher_profile.teaching_experience,
+            'certifications': teacher_profile.certifications,
+        }
+
+        return Response({
+            'profile': profile_data,
+            'students': [{'name': student['profile__user__username'], 'id': student['profile__user__id']} for student in students]
+        })
+
 class Courses_Create(generics.ListCreateAPIView):
     serializer_class = CoursesSerializer
     permission_classes = [IsAuthenticated]
@@ -96,22 +115,25 @@ class Courses_Create(generics.ListCreateAPIView):
         return Courses.objects.all()
 
     def get(self, request):
-        courses = self.get_queryset()
+        courses = self.get_queryset().order_by('id')
         user = request.user
         user_courses = user.profile.studentprofile.current_courses.all() if hasattr(user.profile, 'studentprofile') else []
         serialized_courses = CoursesSerializer(courses, many=True).data
+        
+        # Automatically make the first course active
+        if serialized_courses:
+            serialized_courses[0]['is_active'] = True
 
-        # Mark courses as active based on user-specific enrollment
-        for course in serialized_courses:
-            course['is_active'] = any(uc.id == course['id'] for uc in user_courses)
+        # Check for course completion and enable the next course if the previous is completed
+        for i in range(1, len(serialized_courses)):
+            previous_course = serialized_courses[i - 1]
+            current_course = serialized_courses[i]
+            if any(uc.id == previous_course['id'] for uc in user_courses):
+                # Assuming there's a field 'is_completed' to track course completion
+                if previous_course['is_completed']:
+                    current_course['is_active'] = True
 
         return Response(serialized_courses)
-
-    def perform_create(self, serializer):
-        if serializer.is_valid():
-            serializer.save(teacher_owner=self.request.user)
-        else:
-            print(serializer.errors)
 
 
 class Course_Delete(generics.DestroyAPIView):
@@ -158,30 +180,53 @@ class CurrentUserView(APIView):
 
         return Response(profile_data)
 
+
 class CourseDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, course_id):
         try:
             course = Courses.objects.get(id=course_id)
-            serializer = CoursesSerializer(course)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            projects = course.projects_set.all()
+            project_data = [{
+                'id': project.id,
+                'title': project.title,
+                'description': project.description,
+            } for project in projects]
+
+            course_data = {
+                'name': course.name,
+                'description': course.description,
+                'is_active': course.is_active,
+                'number_of_students_in_course': course.number_of_students_in_course,
+                'date_created': course.date_created,
+                'date_updated': course.date_updated,
+                'projects': project_data,
+            }
+
+            return Response(course_data)
         except Courses.DoesNotExist:
             return Response({"error": "Course not found"}, status=status.HTTP_404_NOT_FOUND)
+
 
 class JoinCourseView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, course_id):
         try:
-            print(f"Joining course with ID: {course_id}")
             course = Courses.objects.get(id=course_id)
             student_profile = request.user.profile.studentprofile
 
+            # Fetch the previous course in the sequence, if any
+            previous_course = Courses.objects.filter(id=course_id - 1).first()
+
             # Check if the student is already enrolled in the course
             if student_profile.current_courses.filter(id=course_id).exists():
-                print("Already enrolled in this course")
                 return Response({"error": "You are already enrolled in this course."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Ensure the previous course is completed if it exists
+            if previous_course and not student_profile.current_courses.filter(id=previous_course.id, is_completed=True).exists():
+                return Response({"error": "You need to complete the previous course before joining this one."}, status=status.HTTP_400_BAD_REQUEST)
 
             student_profile.current_courses.add(course)
             course.number_of_students_in_course += 1
@@ -189,8 +234,69 @@ class JoinCourseView(APIView):
 
             return Response({"message": "Successfully joined the course"}, status=status.HTTP_200_OK)
         except Courses.DoesNotExist:
-            print("Course does not exist")
             return Response({"error": "Course not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            print(f"Unexpected error: {e}")
             return Response({"error": "Something went wrong."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ProjectDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, project_id):
+        try:
+            project = Projects.objects.get(id=project_id)
+            tasks = project.tasks_set.all()
+            task_data = [{
+                'id': task.id,
+                'title': task.title,
+                'description': task.description,
+                'question': task.question,
+                'options': task.options,
+            } for task in tasks]
+
+            project_data = {
+                'title': project.title,
+                'description': project.description,
+                'tasks': task_data,
+            }
+
+            return Response(project_data)
+        except Projects.DoesNotExist:
+            return Response({"error": "Project not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class SubmitTaskView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, task_id):
+        try:
+            task = Tasks.objects.get(id=task_id)
+            user = request.user
+
+            # Assume task submission logic here
+            task.is_completed = True
+            task.save()
+
+            # Calculate project completion
+            project = task.project
+            total_tasks = project.tasks.count()
+            completed_tasks = project.tasks.filter(is_completed=True).count()
+            project_completion_percentage = (completed_tasks / total_tasks) * 100
+
+            if project_completion_percentage >= 100:
+                project.is_completed = True
+                project.save()
+
+                # Calculate course completion
+                course = project.course
+                total_projects = course.projects.count()
+                completed_projects = course.projects.filter(is_completed=True).count()
+                course_completion_percentage = (completed_projects / total_projects) * 100
+
+                if course_completion_percentage > 50:
+                    course.is_completed = True
+                    course.save()
+
+            return Response({"message": "Task submitted successfully"}, status=status.HTTP_200_OK)
+        except Tasks.DoesNotExist:
+            return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)

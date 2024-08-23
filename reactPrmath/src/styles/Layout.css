@@ -1,41 +1,95 @@
-/* Layout.css */
 .layout-container {
-    display: flex;
-    height: 100vh;
-  }
-  
-  .layout-container .sidebar {
-    width: var(--sidebar-width, 10%); /* Use CSS variable for width */
-    background-color: #1c1c1c;
-    color: #E5B174;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: width 0.3s ease; /* Smooth transition */
-  }
-  
-  .layout-container .main-content {
-    flex: 1;
-    padding: 20px;
-    color: #ffffff;
-    background: url('./images/wallpaper.jpg') no-repeat center center;
-    background-size: cover;
-    position: relative;
-  }
-  
-  .layout-container .main-content::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-  }
-  
-  .layout-container .main-content > * {
-    position: relative;
-    z-index: 2;
-  }
+  display: flex;
+  height: 100vh;
+}
+
+.layout-container .sidebar {
+  width: var(--sidebar-width, 10%);
+  background-color: #1c1c1c;
+  color: #E5B174;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: width 0.3s ease-in-out; /* Smooth transition for sidebar width */
+}
+
+.layout-container .sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.layout-container .sidebar ul li {
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.layout-container .sidebar ul li a {
+  color: #E5B174;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  transition: color 0.3s ease-in-out; /* Smooth color transition */
+}
+
+.layout-container .sidebar ul li.active a {
+  color: #4E5D3F; /* Active link color */
+}
+
+.layout-container .sidebar ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 0;
+  background-color: #7A918D;
+  transition: width 0.3s ease-in-out; /* Hover animation */
+}
+
+.layout-container .sidebar ul li.active::before {
+  width: 100%; /* Active link underline */
+  background-color: #A67C52; /* Muted Copper */
+}
+
+.layout-container .sidebar ul li:hover::before {
+  width: 100%; /* Hover underline */
+  background-color: #746D5D;
+}
+
+.layout-container .main-content {
+  flex: 1;
+  padding: 20px;
+  color: #ffffff;
+  background: url('./images/wallpaper.jpg') no-repeat center center;
+  background-size: cover;
+  position: relative;
+  transition: opacity 0.5s ease-in-out; /* Smooth transition between pages */
+}
+
+.layout-container .main-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.layout-container .main-content > * {
+  position: relative;
+  z-index: 2;
+}
+
+.layout-container .main-content > *:enter {
+  opacity: 0;
+}
+
+.layout-container .main-content > *:enter-active {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out; /* Smooth transition between page content */
+}

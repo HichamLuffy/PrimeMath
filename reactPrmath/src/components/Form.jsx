@@ -34,13 +34,13 @@ function Form({ route, method }) {
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
                 localStorage.setItem(USER_NAME, res.data.username);
                 localStorage.setItem(USER_ROLE, res.data.role);
-                navigate("/");
-            } else {
-                if (role === "teacher") {
-                    navigate("/teacher-profile-form");
+                if (res.data.role === "teacher") {
+                    navigate("/teacher-dashboard");
                 } else {
-                    navigate("/login");
+                    navigate("/");
                 }
+            } else {
+                navigate("/login");
             }
         } catch (error) {
             alert(`Error: ${error.response ? error.response.data : error.message}`);

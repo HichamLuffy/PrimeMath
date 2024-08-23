@@ -9,5 +9,8 @@ urlpatterns = [
     path('api/current_user/', views.CurrentUserView.as_view(), name='current_user'),
     path("courses/join/<int:course_id>/", views.JoinCourseView.as_view(), name="join-course"),
     path("courses/<int:course_id>/", views.CourseDetailView.as_view(), name="course-detail"),  # New route for course details
-    path("api/teacher-profile/", views.TeacherProfileUpdateView.as_view(), name="teacher-profile-update"),
+    path('teacher-dashboard/', views.TeacherDashboardView.as_view(), name='teacher-dashboard'),
+    path('edit-teacher-profile/', views.TeacherProfileUpdateView.as_view(), name='edit-teacher-profile'),
+    path('tasks/submit/<int:task_id>/', views.SubmitTaskView.as_view(), name='submit-task'),
+    path("projects/<int:project_id>/", views.ProjectDetailView.as_view(), name="project-detail"),
 ]

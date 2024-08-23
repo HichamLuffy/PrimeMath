@@ -49,8 +49,12 @@ const Courses = () => {
         }
     };
 
-    const handleCourseClick = (courseId) => {
-        navigate(`/courses/${courseId}`);
+    const handleCourseClick = (courseId, isActive) => {
+        if (isActive) {
+            navigate(`/courses/${courseId}`);
+        } else {
+            alert("You must complete the previous course before accessing this one.");
+        }
     };
 
     if (loading) return <div>Loading...</div>;
@@ -62,13 +66,13 @@ const Courses = () => {
                 {courses.map((course) => (
                     <li key={course.id}>
                         <span
-                            style={{ cursor: 'pointer', textDecoration: course.is_active ? 'underline' : 'none' }}
-                            onClick={() => handleCourseClick(course.id)}
+                            style={{ cursor: course.is_active ? 'pointer' : 'not-allowed', textDecoration: course.is_active ? 'underline' : 'none' }}
+                            onClick={() => handleCourseClick(course.id, course.is_active)}
                         >
                             {course.name} - Active: {course.is_active ? "Yes" : "No"} - Students: {course.number_of_students_in_course}
                         </span>
-                        {(!course.is_active) && (
-                            <button onClick={() => handleJoinCourse(course.id)}>
+                        {(!course.is_active && !userCourses.includes(course.id)) && (
+                            <button disabled={!course.is_active} onClick={() => handleJoinCourse(course.id)}>
                                 Join
                             </button>
                         )}

@@ -7,15 +7,16 @@ import '../styles/Layout.css';
 function Layout() {
     const location = useLocation();
     const [sidebarWidth, setSidebarWidth] = useState('10%');
+    const [activeLink, setActiveLink] = useState(location.pathname);
 
     useEffect(() => {
-        // Adjust the sidebar width based on the current route
         if (location.pathname === '/') {
             setSidebarWidth('20%');
         } else {
             setSidebarWidth('10%');
         }
-    }, [location.pathname]);
+        setActiveLink(location.pathname);
+    }, [location.pathname])
 
     return (
         <div className="layout-container" style={{ '--sidebar-width': sidebarWidth }}>
@@ -23,11 +24,11 @@ function Layout() {
                 <h1 className="logo">PRIME MATH</h1>
                 <nav>
                     <ul>
-                        <li><Link to="/">Menu</Link></li>
-                        <li><Link to="/courses">Courses</Link></li>
-                        <li><Link to="/dashboard">Dashboard</Link></li>
-                        <li><Link to="/profile">Profile</Link></li>
-                        <li><Link to="/about">About</Link></li>
+                        <li className={activeLink === '/' ? 'active' : ''}><Link to="/">Menu</Link></li>
+                        <li className={activeLink === '/courses' ? 'active' : ''}><Link to="/courses">Courses</Link></li>
+                        <li className={activeLink === '/dashboard' ? 'active' : ''}><Link to="/dashboard">Dashboard</Link></li>
+                        <li className={activeLink === '/profile' ? 'active' : ''}><Link to="/profile">Profile</Link></li>
+                        <li className={activeLink === '/about' ? 'active' : ''}><Link to="/about">About</Link></li>
                     </ul>
                 </nav>
                 <div className="upcoming-events">

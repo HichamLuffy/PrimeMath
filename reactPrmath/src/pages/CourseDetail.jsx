@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 const CourseDetail = () => {
     const { courseId } = useParams();
@@ -34,6 +34,14 @@ const CourseDetail = () => {
             <p>Students Enrolled: {course.number_of_students_in_course}</p>
             <p>Created On: {new Date(course.date_created).toLocaleDateString()}</p>
             <p>Last Updated: {new Date(course.date_updated).toLocaleDateString()}</p>
+            <h2>Projects</h2>
+            <ul>
+                {course.projects.map(project => (
+                    <li key={project.id}>
+                        <Link to={`/projects/${project.id}`}>{project.title}</Link>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };
