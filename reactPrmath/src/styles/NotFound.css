@@ -1,63 +1,84 @@
-/* NotFound.css */
-.notfound-page {
-  height: 100vh;
-  background: url("https://wallpapercave.com/wp/6SLzBEY.jpg") no-repeat left top;
-  background-size: cover;  
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+@import url('https://fonts.cdnfonts.com/css/play-pretend');
 
-  .text h1 {
-    color: #011718;
-    margin-top: -200px;
-    font-size: 15em;
+.notfound-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to right, #1c1c1c, #2c2c2c);
+    position: relative;
+    overflow: hidden;
+}
+
+.torch {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.9) 80%);
+    pointer-events: none;
+    animation: fadeInTorch 0.8s ease-in-out;
+}
+
+@keyframes fadeInTorch {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.content {
     text-align: center;
-    text-shadow: -5px 5px 0px rgba(0,0,0,0.7), -10px 10px 0px rgba(0,0,0,0.4), -15px 15px 0px rgba(0,0,0,0.2);
-    font-family: monospace;
-    font-weight: bold;
-  }
+    color: #E5B174;
+    animation: slideIn 1s ease-in-out;
+    z-index: 2;
+}
 
-  .text h2 {
-    color: black;
-    font-size: 5em;
-    text-shadow: -5px 5px 0px rgba(0,0,0,0.7);
-    text-align: center;
-    margin-top: -150px;
-    font-family: monospace;
-    font-weight: bold;
-  }
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-  .text h3 {
+.content h1 {
+    font-size: 10em;
+    margin: 0;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+    font-family: 'Play Pretend', sans-serif;
+}
+
+.content h2 {
+    font-size: 3em;
+    margin: 20px 0;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    font-family: 'Play Pretend', sans-serif;
+}
+
+.content p {
+    font-size: 1.5em;
+    margin-bottom: 40px;
+    color: #ffffff;
+}
+
+.home-button {
+    padding: 15px 30px;
+    background-color: #f44336;
     color: white;
-    margin-left: 30px;
-    font-size: 2em;
-    text-shadow: -5px 5px 0px rgba(0,0,0,0.7);
-    margin-top: -40px;
-    font-family: monospace;
-    font-weight: bold;
-  }
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s, transform 0.3s;
+}
 
-  .torch {
-    margin: -150px 0 0 -150px;
-    width: 200px;
-    height: 200px;
-    box-shadow: 0 0 0 9999em #000000f7;
-    opacity: 1;
-    border-radius: 50%;
-    position: fixed;
-    background: rgba(0,0,0,0.3);
-  }
-
-  .torch:after {
-    content: '';
-    display: block;
-    border-radius: 50%;
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    left: 0px;
-    box-shadow: inset 0 0 40px 0px #000, 0 0 20px 4px rgba(13,13,10,0.2);  
-  }
+.home-button:hover {
+    background-color: #d32f2f;
+    transform: scale(1.1);
 }

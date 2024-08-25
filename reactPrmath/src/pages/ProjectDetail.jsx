@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 const ProjectDetail = () => {
     const { projectId } = useParams();
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
+    const location = useLocation();
 
     useEffect(() => {
         const fetchProject = async () => {
@@ -26,9 +27,10 @@ const ProjectDetail = () => {
 
     if (!project) return <div>Project not found</div>;
 
+    console.log('Current location:', location.pathname); // Debugging line
+
     return (
         <div>
-            
             <h1>{project.title}</h1>
             <p>{project.description}</p>
             <h2>Tasks</h2>

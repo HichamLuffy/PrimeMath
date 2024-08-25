@@ -118,6 +118,7 @@ class Courses_Create(generics.ListCreateAPIView):
         courses = self.get_queryset().order_by('id')
         user = request.user
         user_courses = user.profile.studentprofile.current_courses.all() if hasattr(user.profile, 'studentprofile') else []
+        
         serialized_courses = CoursesSerializer(courses, many=True).data
         
         # Automatically make the first course active
@@ -125,13 +126,10 @@ class Courses_Create(generics.ListCreateAPIView):
             serialized_courses[0]['is_active'] = True
 
         # Check for course completion and enable the next course if the previous is completed
-        for i in range(1, len(serialized_courses)):
-            previous_course = serialized_courses[i - 1]
+        for i in range(len(serialized_courses)):
             current_course = serialized_courses[i]
-            if any(uc.id == previous_course['id'] for uc in user_courses):
-                # Assuming there's a field 'is_completed' to track course completion
-                if previous_course['is_completed']:
-                    current_course['is_active'] = True
+            if any(uc.id == current_course['id'] for uc in user_courses):
+                current_course['is_active'] = True
 
         return Response(serialized_courses)
 

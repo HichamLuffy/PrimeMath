@@ -1,8 +1,15 @@
+@import url('https://fonts.cdnfonts.com/css/casanova-scotia');
 .layout-container {
   display: flex;
   height: 100vh;
 }
-
+.logo {
+  font-size: 2em;
+  margin: 0;
+  text-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+  font-family: 'Play Pretend', sans-serif;
+  
+}
 .layout-container .sidebar {
   width: var(--sidebar-width, 10%);
   background-color: #1c1c1c;
@@ -22,6 +29,7 @@
 
 .layout-container .sidebar ul li {
   margin-bottom: 20px;
+  font-family: 'Casanova Scotia', sans-serif;
   position: relative;
   overflow: hidden;
 }
@@ -35,7 +43,7 @@
 }
 
 .layout-container .sidebar ul li.active a {
-  color: #4E5D3F; /* Active link color */
+  color: #7A918D; /* Active link color */
 }
 
 .layout-container .sidebar ul li::before {

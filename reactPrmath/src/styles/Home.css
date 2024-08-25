@@ -3,14 +3,14 @@
 .home-container {
   display: flex;
   height: 100vh;
-  background: linear-gradient(to right, #1c1c1c, #2c2c2c);
+  /* background: linear-gradient(to right, #1c1c1c, #2c2c2c); */
 }
 
 .main-content {
   flex: 1;
   padding: 40px;
   color: #ffffff;
-  background: url('./images/wallpaper.jpg') no-repeat center center;
+  /* background: url('./images/wallpaper.jpg') no-repeat center center; */
   background-size: cover;
   position: relative;
   animation: fadeIn 0.8s ease-in-out;
@@ -34,7 +34,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  /* background: rgba(0, 0, 0, 0.5); */
   z-index: 1;
 }
 
