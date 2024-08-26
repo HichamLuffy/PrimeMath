@@ -13,4 +13,5 @@ urlpatterns = [
     path('edit-teacher-profile/', views.TeacherProfileUpdateView.as_view(), name='edit-teacher-profile'),
     path('tasks/submit/<int:task_id>/', views.SubmitTaskView.as_view(), name='submit-task'),
     path("projects/<int:project_id>/", views.ProjectDetailView.as_view(), name="project-detail"),
+    path('api/users/', views.UserListAPIView.as_view(), name='user-list'),
 ]

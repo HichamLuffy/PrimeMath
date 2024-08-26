@@ -1,0 +1,40 @@
+.dashboard {
+    padding: 20px;
+    background-color: rgba(28, 28, 28, 0.85);
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: 'Casanova Scotia', sans-serif;
+    color: #E5B174;
+}
+
+.user-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-list li {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 4px;
+    background-color: rgba(17, 16, 16, 0.9);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease-in-out;
+    border-left: 5px solid transparent;
+}
+
+.user-list li.online {
+    border-left-color: #E5B174;
+    color: #E5B174;
+}
+
+.user-list li.offline {
+    border-left-color: red;
+    color: #999;
+}
+
+.user-list li:hover {
+    background-color: rgba(17, 16, 16, 0.7);
+}

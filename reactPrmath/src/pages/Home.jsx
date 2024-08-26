@@ -48,7 +48,7 @@ function Home() {
     }
 
     return (
-        <div className="home-container">
+        // <div className="home-container">
             <div className="main-content">
                 <div className="user-info">
                     <div className="user-header">
@@ -88,7 +88,7 @@ function Home() {
                 </div>
                 <button onClick={handleLogout} className="logout-button">Logout</button>
             </div>
-        </div>
+        // </div>
     );
 }
 

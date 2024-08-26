@@ -2,6 +2,7 @@
 .layout-container {
   display: flex;
   height: 100vh;
+  
 }
 .logo {
   font-size: 2em;
@@ -24,7 +25,7 @@
 .layout-container .sidebar ul {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin-bottom: 12rem;
 }
 
 .layout-container .sidebar ul li {
@@ -70,6 +71,7 @@
 .layout-container .main-content {
   flex: 1;
   padding: 20px;
+  overflow: auto;
   color: #ffffff;
   background: url('./images/wallpaper.jpg') no-repeat center center;
   background-size: cover;
@@ -79,13 +81,17 @@
 
 .layout-container .main-content::before {
   content: "";
-  position: absolute;
+  /* position: absolute; */
+  overflow: hidden;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
   z-index: 1;
+  /* backdrop-filter: blur(0.1rem); */
+  height: 100%; 
+  width: 100%; 
 }
 
 .layout-container .main-content > * {

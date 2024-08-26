@@ -1,62 +1,128 @@
+@import url('https://fonts.cdnfonts.com/css/play-pretend');
+@import url('https://fonts.cdnfonts.com/css/casanova-scotia');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+
 body {
-  background-image: url('./images/wallpaper.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed; /* This ensures the background stays fixed */
-  min-height: 100vh;
-  margin: 0;
-  overflow: hidden; /* Prevents scrolling */
-  font-family: "Poppins", sans-serif;
+    background-image: url('./images/wallpaper.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    /* font-family: 'Play Pretend', sans-serif; */
 }
 
 .form-container {
-    font-family: "Poppins", sans-serif;
-    background: rgba( 255, 255, 255, 0 );
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    backdrop-filter: blur( 4px );
-    -webkit-backdrop-filter: blur( 4px );
+    font-family: 'Casanova Scotia', sans-serif;
+    background: rgba(28, 28, 28, 0.85);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     border-radius: 10px;
-    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    border: 1px solid rgba(255, 255, 255, 0.18);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: 50px auto;
-    padding: 20px;
+    padding: 30px;
     max-width: 400px;
-  }
-  
-  .form-input {
+    color: #E5B174;
+}
+
+.form-input {
     font-family: "Poppins", sans-serif;
     width: 90%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
+    padding: 12px;
+    margin: 12px 0;
+    border: 1px solid #555;
     border-radius: 4px;
     box-sizing: border-box;
-  }
-  
-  .form-button {
-    font-family: "Poppins", sans-serif;
+    background-color: #333;
+    color: #ffffff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input:focus {
+    border-color: #E5B174;
+    box-shadow: 0 0 8px rgba(229, 177, 116, 0.8);
+}
+
+.form-input.input-error {
+    border-color: #e74c3c;
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+}
+
+.form-input.input-error:focus {
+    border-color: #e74c3c;
+    box-shadow: 0 0 8px rgba(231, 76, 60, 0.8);
+}
+
+.error-message {
+    font-size: 1rem;
+    color: #e74c3c;
+    margin: -5px 0 10px 0;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.form-button {
+    font-family: 'Casanova Scotia', sans-serif;
     justify-content: center;
     align-items: center;
     width: 95%;
-    padding: 10px;
+    padding: 15px;
     margin: 20px 0;
-    border-radius: 32.5px;
-    background-color: #000000;
+    border-radius: 10px;
+    background-color: #070504;
     color: white;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-    box-shadow:
-    0 3px 9px rgba(0, 0, 0, 0.231), /* The outer shadow */
-    0 -3px 1.5px rgba(255, 255, 255, 0.616); /* The inner white shadow */
-  }
-  
-  .form-button:hover {
-    background-color: #424242;
-  }
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 
+        0 3px 9px rgba(0, 0, 0, 0.3),
+        0 -3px 1.5px rgba(255, 255, 255, 0.2);
+}
+
+.form-button:hover {
+    background-color: #ffffff;
+    color: black;
+    transform: scale(1.05);
+    box-shadow: 
+        0 5px 15px rgba(0, 0, 0, 0.4),
+        0 -5px 2.5px rgba(255, 255, 255, 0.3);
+}
+
+.form-button:active {
+    background-color: #b71c1c;
+    transform: scale(1);
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #E5B174;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+p {
+    font-size: 1.2em;
+    color: #E5B174;
+    margin-top: 15px;
+}
+
+p a {
+    color: #E5B174;
+    text-decoration: underline;
+    transition: color 0.3s;
+}
+
+p a:hover {
+    color: #ffffff;
+}

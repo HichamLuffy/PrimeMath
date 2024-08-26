@@ -14,6 +14,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.db import IntegrityError
+from django.utils import timezone
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -200,6 +202,8 @@ class CourseDetailView(APIView):
                 'date_created': course.date_created,
                 'date_updated': course.date_updated,
                 'projects': project_data,
+                'score': course.score,
+
             }
 
             return Response(course_data)
@@ -256,6 +260,8 @@ class ProjectDetailView(APIView):
                 'title': project.title,
                 'description': project.description,
                 'tasks': task_data,
+                'is_completed': project.is_completed,
+                'defficulty_level': project.difficulty_level,
             }
 
             return Response(project_data)
@@ -264,37 +270,40 @@ class ProjectDetailView(APIView):
 
 
 class SubmitTaskView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def post(self, request, task_id):
-        try:
-            task = Tasks.objects.get(id=task_id)
-            user = request.user
+        task = get_object_or_404(Tasks, id=task_id)
+        chosen_answer = request.data.get('chosen_answer')
 
-            # Assume task submission logic here
-            task.is_completed = True
-            task.save()
+        if not chosen_answer:
+            return Response({"error": "No answer provided"}, status=400)
 
-            # Calculate project completion
-            project = task.project
-            total_tasks = project.tasks.count()
-            completed_tasks = project.tasks.filter(is_completed=True).count()
-            project_completion_percentage = (completed_tasks / total_tasks) * 100
+        task.chosen_answer = chosen_answer
 
-            if project_completion_percentage >= 100:
-                project.is_completed = True
-                project.save()
+        if task.check_answer(chosen_answer):
+            task.mark_as_completed()
+            return Response({"message": "Correct! The task is marked as completed.", "is_completed": True})
+        else:
+            return Response({"message": "Incorrect. Try again!", "is_completed": False})
 
-                # Calculate course completion
-                course = project.course
-                total_projects = course.projects.count()
-                completed_projects = course.projects.filter(is_completed=True).count()
-                course_completion_percentage = (completed_projects / total_projects) * 100
 
-                if course_completion_percentage > 50:
-                    course.is_completed = True
-                    course.save()
+class UserListAPIView(APIView):
+    def get(self, request):
+        users_data = []
+        users = User.objects.all()
 
-            return Response({"message": "Task submitted successfully"}, status=status.HTTP_200_OK)
-        except Tasks.DoesNotExist:
-            return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
+        for user in users:
+            try:
+                profile = user.profile
+                online_status = profile.is_online()
+                score = profile.studentprofile.points if hasattr(profile, 'studentprofile') else 0
+            except Profile.DoesNotExist:
+                online_status = False
+                score = 0
+            
+            users_data.append({
+                "username": user.username,
+                "score": score,
+                "online": online_status,
+            })
+
+        return Response(users_data)

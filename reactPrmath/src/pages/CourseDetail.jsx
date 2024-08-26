@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
 import { useParams, Link } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
 import LoadingIndicator from "../components/LoadingIndicator";
+import '../styles/CourseDetails.css';
 
 const CourseDetail = () => {
     const { courseId } = useParams();
@@ -28,21 +30,44 @@ const CourseDetail = () => {
     if (!course) return <div>Course not found</div>;
 
     return (
-        <div>
-            <h1>{course.name}</h1>
-            <p>{course.description}</p>
-            <p>Active: {course.is_active ? "Yes" : "No"}</p>
-            <p>Students Enrolled: {course.number_of_students_in_course}</p>
-            <p>Created On: {new Date(course.date_created).toLocaleDateString()}</p>
-            <p>Last Updated: {new Date(course.date_updated).toLocaleDateString()}</p>
-            <h2>Projects</h2>
-            <ul>
-                {course.projects.map(project => (
-                    <li key={project.id}>
-                        <Link to={`/projects/${project.id}`}>{project.title}</Link>
-                    </li>
-                ))}
-            </ul>
+        <div className="course-detail-layout">
+            <header className="course-detail-header">
+                <h1 className="course-title">{course.name}</h1>
+            <div className="course-detail-info">
+                <div className="course-detail-info-item">
+                    <p><strong>Active:</strong> {course.is_active ? "Yes" : "No"}</p>
+                </div>
+                <div className="course-detail-info-item">
+                    <p><strong>Status:</strong> {course.is_completed ? "Completed" : "Not completed"}</p>
+                </div>
+                <div className="course-detail-info-item">
+                    <p><strong>Enrolled Students:</strong> {course.number_of_students_in_course}</p>
+                </div>
+                <div className="course-detail-info-item">
+                    <p><strong>Created On:</strong> {new Date(course.date_created).toLocaleDateString()}</p>
+                </div>
+
+            </div>
+                <div className="course-description"><ReactMarkdown>{course.description}</ReactMarkdown></div>
+            </header>
+
+
+            <section className="projects-section">
+                <h2 className="projects-title">Projects</h2>
+                {course.projects.length > 0 ? (
+                    <ul className="projects-list">
+                        {course.projects.map(project => (
+                            <li key={project.id} className="project-item">
+                                <Link to={`/projects/${project.id}`}>{project.title}</Link>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p style={{ textAlign: 'center', color: '#A0D995', fontSize: '1.1em' }}>
+                        No projects available for this course yet.
+                    </p>
+                )}
+            </section>
         </div>
     );
 };

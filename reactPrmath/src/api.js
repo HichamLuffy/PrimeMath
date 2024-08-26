@@ -43,5 +43,14 @@ export const updateTeacherProfile = async (profileData) => {
   }
 };
 
+export const fetchUserList = async () => {
+  try {
+    const response = await api.get('/api/users/');
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user list:", error);
+    throw error;
+  }
+};
 
 export default api;

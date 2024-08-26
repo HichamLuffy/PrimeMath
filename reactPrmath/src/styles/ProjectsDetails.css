@@ -1,0 +1,117 @@
+.project-detail-layout {
+    font-family: 'Casanova Scotia', sans-serif;
+    color: #E5B174;
+    max-width: 800px;
+    margin: 0 0;
+}
+
+.project-detail-header {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.project-title {
+    font-size: 2em;
+    color: #E5B174;
+    margin-bottom: 10px;
+    font-family: 'Casanova Scotia', sans-serif;
+    padding: 8px;
+    border-bottom: 1px solid #E5B174;
+}
+
+.project-description {
+    font-size: 1em;
+    color: #A0D995; /* Soft green for a fresh look */
+    font-family: "Poppins", sans-serif;
+    margin-bottom: 20px;
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.task-item {
+    background-color: rgba(28, 28, 28, 0.85);
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    font-family: 'Casanova Scotia', sans-serif;
+}
+
+.task-title {
+    font-size: 1.5em;
+    color: #F4978E; /* Warm coral for task titles */
+    margin-bottom: 10px;
+    text-align: center;
+    border-bottom: 1px solid #F4978E;
+    padding-bottom: 5px;
+}
+
+.task-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1em;
+    color: #E5B174;
+    margin-bottom: 15px;
+}
+
+.task-question {
+    font-size: 1.1em;
+    color: #FDCB6E; /* Yellow-orange for highlighting questions */
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-top: 1px solid #FDCB6E;
+    padding-top: 10px;
+}
+
+.task-options {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.task-option {
+    margin-bottom: 8px;
+}
+
+.task-option-label {
+    font-family: "Poppins", sans-serif;
+    color: #E5B174;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.task-option-input {
+    margin-right: 8px;
+    accent-color: #E5B174;
+}
+
+.task-submit-button {
+    background-color: #070504;
+    color: #74B9FF; /* Cool blue for the submit button */
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    font-family: 'Casanova Scotia', sans-serif;
+    box-shadow: 
+        0 3px 9px rgba(0, 0, 0, 0.3),
+        0 -3px 1.5px rgba(255, 255, 255, 0.2);
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+.task-submit-button:hover {
+    background-color: #74B9FF;
+    color: #070504;
+    transform: scale(1.05);
+}
+
+.task-submit-button:active {
+    background-color: #E5B174;
+    transform: scale(1);
+}

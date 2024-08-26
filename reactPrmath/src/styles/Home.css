@@ -3,11 +3,13 @@
 .home-container {
   display: flex;
   height: 100vh;
+  overflow: hidden;
   /* background: linear-gradient(to right, #1c1c1c, #2c2c2c); */
 }
 
 .main-content {
   flex: 1;
+  overflow: hidden;
   padding: 40px;
   color: #ffffff;
   /* background: url('./images/wallpaper.jpg') no-repeat center center; */
@@ -30,24 +32,27 @@
 .main-content::before {
   content: "";
   position: absolute;
+  overflow: hidden;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  /* background: rgba(0, 0, 0, 0.5); */
+
   z-index: 1;
 }
 
 .main-content > * {
   position: relative;
   z-index: 2;
+  overflow: hidden;
 }
 
 .user-info {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   padding: 30px;
-  background: rgba(0, 0, 0, 0.8);
+  /* background: rgba(0, 0, 0, 0.8); */
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   animation: slideInLeft 1s ease-in-out;
@@ -61,6 +66,7 @@
 
 .user-header {
   display: flex;
+  
   align-items: center;
   margin-bottom: 20px;
 }

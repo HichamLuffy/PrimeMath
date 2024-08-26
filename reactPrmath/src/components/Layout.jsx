@@ -31,13 +31,6 @@ function Layout() {
                         <li className={activeLink === '/about' ? 'active' : ''}><Link to="/about">About</Link></li>
                     </ul>
                 </nav>
-                <div className="upcoming-events">
-                    <h2>Upcoming Events</h2>
-                    <ul>
-                        <li>Discord night 20:30 11/8</li>
-                        <li>ALGORITHM session 9:00 11/10</li>
-                    </ul>
-                </div>
             </div>
             <div className="main-content">
                 <Outlet />

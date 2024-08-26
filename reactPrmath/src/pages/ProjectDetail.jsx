@@ -1,12 +1,15 @@
+// ProjectDetail.jsx
+
 import React, { useState, useEffect } from 'react';
 import api from '../api';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import '../styles/ProjectsDetails.css';
 
 const ProjectDetail = () => {
     const { projectId } = useParams();
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
-    const location = useLocation();
+    const [selectedAnswers, setSelectedAnswers] = useState({});
 
     useEffect(() => {
         const fetchProject = async () => {
@@ -23,31 +26,79 @@ const ProjectDetail = () => {
         fetchProject();
     }, [projectId]);
 
-    if (loading) return <div>Loading...</div>;
+    const handleAnswerChange = (taskId, answer) => {
+        setSelectedAnswers(prev => ({
+            ...prev,
+            [taskId]: answer
+        }));
+    };
 
+    const handleSubmit = async (taskId) => {
+        const chosen_answer = selectedAnswers[taskId];
+        if (!chosen_answer) return;
+
+        try {
+            const response = await api.post(`/tasks/submit/${taskId}/`, { chosen_answer });
+            if (response.data.is_completed) {
+                alert('Correct! The task is marked as completed.');
+                setProject(prevProject => ({
+                    ...prevProject,
+                    tasks: prevProject.tasks.map(task =>
+                        task.id === taskId ? { ...task, is_completed: true } : task
+                    )
+                }));
+            } else {
+                alert('Incorrect. Try again!');
+            }
+        } catch (error) {
+            console.error('Error submitting answer:', error);
+        }
+    };
+
+    if (loading) return <div>Loading...</div>;
     if (!project) return <div>Project not found</div>;
 
-    console.log('Current location:', location.pathname); // Debugging line
-
     return (
-        <div>
-            <h1>{project.title}</h1>
-            <p>{project.description}</p>
-            <h2>Tasks</h2>
-            <ul>
+        <div className="project-detail-layout">
+            <div className="project-detail-header">
+                <h1 className="project-title">{project.title}</h1>
+                <p className="project-description">{project.description}</p>
+                <p className="project-description">Difficulty: {project.difficulty_level}</p>
+            </div>
+            <div className="task-list">
                 {project.tasks.map(task => (
-                    <li key={task.id}>
-                        <h3>{task.title}</h3>
-                        <p>{task.description}</p>
-                        <p>{task.question}</p>
-                        <ul>
+                    <div key={task.id} className="task-item">
+                        <h3 className="task-title">{task.title}</h3>
+                        <div className="task-details">
+                            <span>Difficulty: {task.difficulty_level}</span>
+                            <span>Status: {task.is_completed ? 'Completed' : 'Incomplete'}</span>
+                        </div>
+                        <p className="task-question">{task.question}</p>
+                        <ul className="task-options">
                             {Object.entries(task.options).map(([key, value]) => (
-                                <li key={key}>{key}: {value}</li>
+                                <li key={key} className="task-option">
+                                    <label className="task-option-label">
+                                        <input
+                                            type="radio"
+                                            name={`task-${task.id}`}
+                                            value={key}
+                                            onChange={() => handleAnswerChange(task.id, key)}
+                                            disabled={task.is_completed}
+                                            className="task-option-input"
+                                        />
+                                        {key}: {value}
+                                    </label>
+                                </li>
                             ))}
                         </ul>
-                    </li>
+                        {!task.is_completed && (
+                            <button className="task-submit-button" onClick={() => handleSubmit(task.id)}>
+                                Submit Answer
+                            </button>
+                        )}
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };

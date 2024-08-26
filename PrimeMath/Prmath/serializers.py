@@ -26,10 +26,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     role = serializers.CharField(write_only=True, required=False)  # Accept role name
+    score = serializers.IntegerField(source='studentprofile.points')
+    is_online = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ['username', 'password', 'email', 'role']
+        fields = ['username', 'password', 'email', 'role', 'score', 'is_online']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -48,3 +50,6 @@ class UserSerializer(serializers.ModelSerializer):
             TeacherProfile.objects.create(profile=profile)
         
         return user
+    
+    def get_is_online(self, obj):
+        return obj.profile.is_online()
