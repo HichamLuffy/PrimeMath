@@ -16,31 +16,28 @@ PrimeMath is an interactive and comprehensive math education platform specifical
 - Track your progress in real-time with detailed feedback on your strengths and areas that need improvement.
 - Helps you understand where you excel and where you need to focus more attention, enabling targeted learning.
 
-### **3. Daily Tasks with Deadlines**
+### **3. Daily Tasks with Deadlines (Incoming)**
 - Engage with daily math tasks, each with a specific deadline, to ensure consistent practice and steady progress.
 - Encourages regular practice, which is essential for mastering mathematical concepts.
 
-### **4. Calendar Integration**
+
+### **4. Calendar Integration (Incoming)**
 - A calendar feature that displays upcoming projects, tasks, and deadlines, helping you stay organized and on track.
 - Enhances time management and planning, allowing users to prioritize tasks effectively.
 
-### **5. Manual Review (Peer Review)**(not sure)
-- Option to send your completed tasks to another user for manual review. This peer-review system promotes collaboration and learning from others.
-- Provides additional feedback from peers, enhancing the learning experience through collaboration.
-
-### **6. Checker (Automated Assessment)**
+### **5. Checker (Automated Assessment)**
 - Automated assessment tool that checks your work for accuracy and provides instant feedback.
 - Offers immediate feedback, allowing you to learn from mistakes and improve quickly.
 
-### **7. Course Management**
+### **6. Course Management**
 - Manage and enroll in various math courses tailored to different skill levels and interests. Each course is designed to build upon the previous one, ensuring a logical progression.
 - Provides a structured learning path that guides users through increasingly complex mathematical topics.
 
-### **8. Themed Courses**
+### **7. Themed Courses**
 - Courses like Trigonometry, Algebra, Calculus, and specialized topics like "Math for Programmers," each containing projects and tasks to apply what you learn.
 - Allows users to focus on specific areas of interest or need, providing depth in particular mathematical fields.
 
-### **9. Teacher Phases**
+### **8. Teacher Phases (Incoming)**
 - Student Interaction: Students can text teachers to ask for help, seek clarification, or get additional support on topics they are struggling with.
 - Teacher Contributions: Teachers have the ability to post new courses and projects, enriching the platform with more content and providing a diverse range of learning materials.
 
@@ -49,10 +46,11 @@ PrimeMath is an interactive and comprehensive math education platform specifical
 2. **Choose a Course:** Select a course based on your current skill level or interest.
 3. **Complete Projects:** Engage with daily tasks, projects, and assessments.
 4. **Track Progress:** Use the progress tracking and leveling system to monitor your improvement.
-5. **Collaborate:** Participate in peer reviews and learn from others.
-6. **Connect with Teachers:** Reach out to teachers for guidance and support.
+
 
 ## **Technology Stack**
-- **Frontend:** [React.js]
-- **Backend:** [Django]
-- **Database:** [Mysql]
+- **Frontend:** [React.js](https://reactjs.org/) with [Vite](https://vitejs.dev/)
+- **Backend:** [Django](https://www.djangoproject.com/)
+- **Database:** [MySQL](https://www.mysql.com/)
+- **Authentication:** [JWT](https://jwt.io/)
+
