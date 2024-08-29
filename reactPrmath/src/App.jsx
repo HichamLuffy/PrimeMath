@@ -14,6 +14,8 @@ import CourseDetail from "./pages/CourseDetail"
 import TeacherProfileForm from "./components/TeacherProfileForm"
 import TeacherDashboard from "./components/TeacherDashboard"
 import ProjectDetail from "./pages/ProjectDetail"
+import UserProfile from "./pages/UserProfile"
+
 
 function Logout() {
   localStorage.clear()
@@ -27,6 +29,7 @@ function RegisterAndLogout() {
 }
 
 function App() {
+  
   return (
     <BrowserRouter>
       <Routes>
@@ -47,6 +50,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<About />} />
+          <Route path="/users/:username" element={<UserProfile />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />

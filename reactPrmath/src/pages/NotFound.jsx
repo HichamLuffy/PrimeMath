@@ -7,6 +7,7 @@ function NotFound() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        document.title = `PM - Page Not Found`;
         const handleMouseMove = (e) => {
             setTorchPosition({ x: e.pageX, y: e.pageY });
         };

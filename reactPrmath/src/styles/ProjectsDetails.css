@@ -60,6 +60,7 @@
 
 .task-question {
     font-size: 1.1em;
+    font-family: Arial, Helvetica, sans-serif;
     color: #FDCB6E; /* Yellow-orange for highlighting questions */
     font-weight: bold;
     margin-bottom: 10px;
@@ -114,4 +115,32 @@
 .task-submit-button:active {
     background-color: #E5B174;
     transform: scale(1);
+}
+
+.notfound-project {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* background: linear-gradient(to right, #1c1c1c, #2c2c2c); */
+    position: relative;
+    overflow: hidden;
+}
+
+.feedback-message {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.feedback-message.correct {
+    color: green;
+}
+
+.feedback-message.incorrect {
+    color: red;
+}
+
+.task-item.completed .task-title {
+    border-bottom-color: green;
+    color: green; /* Green color for completed tasks */
 }

@@ -1,0 +1,98 @@
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.profile-content {
+    background-color: #0000004b; /* White background for contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    backdrop-filter: blur(5px); /* Add blur effect */
+}
+
+.profile-header {
+    color: #E5B174; /* Gold color for header */
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.profile-details, .profile-form {
+    color: #7A918D; /* Soft teal for text */
+}
+
+.detail-item {
+    margin-bottom: 10px;
+}
+
+.detail-item strong {
+    color: #E5B174; /* Gold color for labels */
+}
+
+.level-bar {
+    margin-top: 10px;
+    background-color: #7A918D; /* Soft teal background */
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+}
+
+.level-bar-fill {
+    background-color: #E5B174; /* Gold fill */
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.save-button, .edit-button {
+    background-color: #E5B174; /* Gold buttons */
+    color: #121622; /* Dark text on buttons */
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.save-button:hover, .edit-button:hover {
+    background-color: #7A918D; /* Hover effect */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #E5B174; /* Gold label */
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #7A918D; /* Soft teal border */
+    border-radius: 5px;
+    background-color: #F5F5F5; /* Light background for inputs */
+    color: #121622; /* Dark text in inputs */
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    padding: 5px 0;
+}
+
+h2, p {
+    margin: 0;
+}

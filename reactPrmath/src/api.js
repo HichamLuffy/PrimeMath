@@ -53,4 +53,29 @@ export const fetchUserList = async () => {
   }
 };
 
+export const fetchUserProfile = async (username) => {
+  try {
+    // Update this line to use the `api` instance
+    const response = await api.get(`/api/user-profile/${username}/`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    throw error;
+  }
+};
+
+export const fetchDiscordEvents = async () => {
+  try {
+      const response = await fetch('/api/discord-events');
+      const data = await response.json();
+      return data.map(event => ({
+          name: event.name,
+          link: `https://discord.com/channels/1083781045306019951/1153421829260709908`
+      }));
+  } catch (error) {
+      console.error('Error fetching Discord events:', error);
+      return [];
+  }
+};
+
 export default api;

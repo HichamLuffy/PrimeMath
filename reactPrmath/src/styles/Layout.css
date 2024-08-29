@@ -1,109 +1,173 @@
 @import url('https://fonts.cdnfonts.com/css/casanova-scotia');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
+
 .layout-container {
   display: flex;
   height: 100vh;
-  
 }
+
 .logo {
   font-size: 2em;
   margin: 0;
   text-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
   font-family: 'Play Pretend', sans-serif;
-  
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease-in-out;
 }
-.layout-container .sidebar {
+
+.sidebar {
   width: var(--sidebar-width, 10%);
   background-color: #1c1c1c;
   color: #E5B174;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  transition: width 0.3s ease-in-out; /* Smooth transition for sidebar width */
+  justify-content: flex-start;
+  transition: width 0.3s ease-in-out;
+  position: relative;
 }
 
-.layout-container .sidebar ul {
+.sidebar .toggle-btn {
+  align-self: flex-start; /* Align toggle button to the start */
+  margin-bottom: 1rem; /* Reduced margin for a tighter layout */
+  margin-left: 0.5rem; /* Added a bit of margin for better alignment */
+}
+
+
+.sidebar ul {
   list-style: none;
   padding: 0;
-  margin-bottom: 12rem;
+  margin-top: 1rem; 
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
-.layout-container .sidebar ul li {
+.sidebar ul li {
   margin-bottom: 20px;
   font-family: 'Casanova Scotia', sans-serif;
   position: relative;
   overflow: hidden;
 }
 
-.layout-container .sidebar ul li a {
+.sidebar ul li a {
   color: #E5B174;
   text-decoration: none;
-  display: block;
+  display: flex;
+  align-items: center;
   padding: 10px;
-  transition: color 0.3s ease-in-out; /* Smooth color transition */
+  transition: color 0.3s ease-in-out;
 }
 
-.layout-container .sidebar ul li.active a {
-  color: #7A918D; /* Active link color */
+.sidebar ul li a svg {
+  margin-right: 10px;
+  font-size: 1.5em;
 }
 
-.layout-container .sidebar ul li::before {
+.sidebar ul li.active a {
+  color: #7A918D;
+}
+
+.sidebar ul li::before {
   content: '';
   position: absolute;
   left: 0;
   bottom: 0;
   height: 3px;
   width: 0;
-  background-color: #7A918D;
-  transition: width 0.3s ease-in-out; /* Hover animation */
+  background-color: #E5B174;
+  transition: width 0.3s ease-in-out;
 }
 
-.layout-container .sidebar ul li.active::before {
-  width: 100%; /* Active link underline */
-  background-color: #A67C52; /* Muted Copper */
+.sidebar ul li.active::before {
+  width: 100%;
+  background-color: #A67C52;
 }
 
-.layout-container .sidebar ul li:hover::before {
-  width: 100%; /* Hover underline */
+.sidebar ul li:hover::before {
+  width: 100%;
   background-color: #746D5D;
 }
 
-.layout-container .main-content {
+.toggle-btn {
+  background: none;
+  border: none;
+  color: #E5B174;
+  font-size: 2em;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.main-content {
   flex: 1;
   padding: 20px;
   overflow: auto;
   color: #ffffff;
-  background: url('./images/wallpaper.jpg') no-repeat center center;
+  /* background: url('./images/wallpaper.jpg') no-repeat center center; */
   background-size: cover;
   position: relative;
-  transition: opacity 0.5s ease-in-out; /* Smooth transition between pages */
+  transition: opacity 0.5s ease-in-out;
 }
 
-.layout-container .main-content::before {
+.main-content::before {
   content: "";
-  /* position: absolute; */
   overflow: hidden;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
   z-index: 1;
-  /* backdrop-filter: blur(0.1rem); */
   height: 100%; 
   width: 100%; 
 }
 
-.layout-container .main-content > * {
+.main-content > * {
   position: relative;
   z-index: 2;
 }
 
-.layout-container .main-content > *:enter {
+.main-content > *:enter {
   opacity: 0;
 }
 
-.layout-container .main-content > *:enter-active {
+.main-content > *:enter-active {
   opacity: 1;
-  transition: opacity 0.5s ease-in-out; /* Smooth transition between page content */
+  transition: opacity 0.5s ease-in-out;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #E5B174;
+  font-size: 1.5em;
+  cursor: pointer;
+  margin-top: auto; /* Aligns the button at the bottom */
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  transition: color 0.3s ease-in-out;
+}
+
+.logout-btn svg {
+  margin-right: 10px;
+}
+
+.logout-btn:hover {
+  color: #A67C52;
+}
+
+.logout-btn::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 0;
+  background-color: #E5B174;
+  transition: width 0.3s ease-in-out;
+}
+
+.logout-btn:hover::before {
+  width: 100%;
+  background-color: #746D5D;
 }

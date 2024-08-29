@@ -7,11 +7,11 @@ import "../styles/Form.css";
 function Form({ route, method }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState(""); // Added confirm password state
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [email, setEmail] = useState("");
     const [role, setRole] = useState("student");
     const [loading, setLoading] = useState(false);
-    const [errors, setErrors] = useState({}); // State to track form errors
+    const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
     const name = method === "login" ? "SIGN IN" : "Register";
@@ -19,7 +19,7 @@ function Form({ route, method }) {
     const handleSubmit = async (e) => {
         setLoading(true);
         e.preventDefault();
-        setErrors({}); // Clear previous errors
+        setErrors({});
 
         // Validate form inputs
         if (method === "register" && password !== confirmPassword) {
@@ -48,7 +48,17 @@ function Form({ route, method }) {
         } catch (error) {
             if (error.response && error.response.data) {
                 // Handle specific error messages from the backend
-                setErrors(error.response.data);
+                if (method === "login") {
+                    // Handle login errors (e.g., invalid username or password)
+                    const { username: usernameError, password: passwordError, detail } = error.response.data;
+                    setErrors({
+                        username: usernameError || (detail && !passwordError ? detail : undefined),
+                        password: passwordError || (detail && !usernameError ? detail : undefined)
+                    });
+                } else {
+                    // Handle registration errors
+                    setErrors(error.response.data);
+                }
             } else {
                 alert(`Error: ${error.message}`);
             }

@@ -12,6 +12,7 @@ const Courses = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        document.title = `PM - Courses `;
         const fetchCourses = async () => {
             try {
                 const response = await api.get('/courses/');
@@ -44,8 +45,7 @@ const Courses = () => {
                     : course
             );
             setCourses(updatedCourses);
-
-            // Update the user's joined courses list
+    
             setUserCourses([...userCourses, courseId]);
         } catch (error) {
             console.error('Error joining course:', error);
@@ -62,7 +62,7 @@ const Courses = () => {
     if (loading) return <LoadingIndicator />;
 
     return (
-        <div className="courses-container">
+        <div className="course-container">
             <h1 className="courses-title">Courses</h1>
             <div className="courses-list">
                 {courses.map((course) => {
@@ -77,8 +77,8 @@ const Courses = () => {
                         >
                             <div className="course-info">
                                 <h2>{course.name}</h2>
-                                <p>Status: <span className={`status ${course.is_active ? 'active-status' : 'inactive-status'}`}>{course.is_active ? "Active" : "Inactive"}</span></p>
-                                <p>Score : {course.score}</p>
+                                <p><strong>Status:</strong> <span className={`status ${course.is_active ? 'active-status' : 'inactive-status'}`}>{course.is_active ? "Active" : "Inactive"}</span></p>
+                                <p><strong>Score :</strong> {course.completion_percentage}%</p>
                                 <p>
                                     <img src={userIcon} alt="Number of students" className="student-icon" />
                                     {course.number_of_students_in_course} Students
@@ -88,7 +88,7 @@ const Courses = () => {
                                 <button onClick={(e) => { 
                                     e.stopPropagation(); 
                                     handleJoinCourse(course.id); 
-                                }} className="join-button">
+                                }} className="join-button" disabled={!course.is_active}>
                                     Join
                                 </button>
                             ) : (

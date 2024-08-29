@@ -11,10 +11,11 @@ const CourseDetail = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchCourse = async () => {
+        const fetchCourseData = async () => {
             try {
-                const response = await api.get(`/courses/${courseId}/`);
-                setCourse(response.data);
+                // Fetch course details including projects
+                const courseResponse = await api.get(`/courses/${courseId}/`);
+                setCourse(courseResponse.data);
             } catch (error) {
                 console.error('Error fetching course details:', error);
             } finally {
@@ -22,8 +23,14 @@ const CourseDetail = () => {
             }
         };
 
-        fetchCourse();
+        fetchCourseData();
     }, [courseId]);
+    
+    useEffect(() => {
+        if (course) {
+            document.title = `PM - ${course.name}`;
+        }
+    }, [course]);
 
     if (loading) return <LoadingIndicator />;
 
@@ -33,24 +40,24 @@ const CourseDetail = () => {
         <div className="course-detail-layout">
             <header className="course-detail-header">
                 <h1 className="course-title">{course.name}</h1>
-            <div className="course-detail-info">
-                <div className="course-detail-info-item">
-                    <p><strong>Active:</strong> {course.is_active ? "Yes" : "No"}</p>
+                <div className="course-detail-info">
+                    <div className="course-detail-info-item">
+                        <p><strong>Active:</strong> {course.is_active ? "Yes" : "No"}</p>
+                    </div>
+                    <div className="course-detail-info-item">
+                        <p><strong>Status:</strong> {course.is_completed ? "Completed" : "Not completed"}</p>
+                    </div>
+                    <div className="course-detail-info-item">
+                        <p><strong>Enrolled Students:</strong> {course.number_of_students_in_course}</p>
+                    </div>
+                    <div className="course-detail-info-item">
+                        <p><strong>Completion Percentage:</strong> {course.completion_percentage.toFixed(2)}%</p>
+                    </div>
                 </div>
-                <div className="course-detail-info-item">
-                    <p><strong>Status:</strong> {course.is_completed ? "Completed" : "Not completed"}</p>
+                <div className="course-description">
+                    <ReactMarkdown>{course.description}</ReactMarkdown>
                 </div>
-                <div className="course-detail-info-item">
-                    <p><strong>Enrolled Students:</strong> {course.number_of_students_in_course}</p>
-                </div>
-                <div className="course-detail-info-item">
-                    <p><strong>Created On:</strong> {new Date(course.date_created).toLocaleDateString()}</p>
-                </div>
-
-            </div>
-                <div className="course-description"><ReactMarkdown>{course.description}</ReactMarkdown></div>
             </header>
-
 
             <section className="projects-section">
                 <h2 className="projects-title">Projects</h2>
@@ -58,7 +65,10 @@ const CourseDetail = () => {
                     <ul className="projects-list">
                         {course.projects.map(project => (
                             <li key={project.id} className="project-item">
-                                <Link to={`/projects/${project.id}`}>{project.title}</Link>
+                                <Link to={`/projects/${project.id}`}>
+                                    {project.title}
+                                    <p className="project-completion">Completion: {project.completion_percentage.toFixed(2)}%</p>
+                                </Link>
                             </li>
                         ))}
                     </ul>

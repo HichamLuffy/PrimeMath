@@ -2,9 +2,12 @@
 
 .home-container {
   display: flex;
-  height: 100vh;
-  overflow: hidden;
-  /* background: linear-gradient(to right, #1c1c1c, #2c2c2c); */
+  flex-direction: column;
+  padding: 40px;
+  color: #ffffff;
+  background-size: cover;
+  position: relative;
+  animation: fadeIn 0.8s ease-in-out;
 }
 
 .main-content {
@@ -12,7 +15,6 @@
   overflow: hidden;
   padding: 40px;
   color: #ffffff;
-  /* background: url('./images/wallpaper.jpg') no-repeat center center; */
   background-size: cover;
   position: relative;
   animation: fadeIn 0.8s ease-in-out;
@@ -29,22 +31,55 @@
   }
 }
 
-.main-content::before {
-  content: "";
-  position: absolute;
-  overflow: hidden;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  z-index: 1;
+/* Transition and Animation Classes */
+.fade-enter {
+  opacity: 0;
+}
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in-out;
+}
+.fade-exit {
+  opacity: 1;
+}
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
 }
 
-.main-content > * {
-  position: relative;
-  z-index: 2;
+.slide-enter {
+  transform: translateX(-100%);
+}
+.slide-enter-active {
+  transform: translateX(0);
+  transition: transform 500ms ease-in-out;
+}
+.slide-exit {
+  transform: translateX(0);
+}
+.slide-exit-active {
+  transform: translateX(-100%);
+  transition: transform 500ms ease-in-out;
+}
+
+/* Level Bar */
+.level-bar {
+  margin-top: 10px;
+}
+
+.level-bar-bg {
+  width: 100%;
+  background-color: #e0e0de;
+  border-radius: 25px;
+  height: 20px;
   overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.level-bar-fill {
+  height: 100%;
+  background-color: #00b300;
+  transition: width 0.5s ease-in-out;
 }
 
 .user-info {
@@ -52,21 +87,24 @@
   flex-direction: column;
   overflow: hidden;
   padding: 30px;
-  /* background: rgba(0, 0, 0, 0.8); */
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   animation: slideInLeft 1s ease-in-out;
 }
 
 @keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
   to {
+    transform: translateX(0);
     opacity: 1;
-}
+  }
 }
 
 .user-header {
   display: flex;
-  
   align-items: center;
   margin-bottom: 20px;
 }
@@ -90,8 +128,19 @@
   margin: 5px 0;
 }
 
-.current-course, .current-projects {
-  margin-top: 30px;
+.courses-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.current-courses, .completed-courses {
+  flex: 1;
+  margin: 10px;
+  border: #5c5c5c 2px solid;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f2f2f20a;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .course-item, .project-item {
@@ -99,6 +148,28 @@
   text-decoration: underline;
   padding: 5px 0;
   transition: color 0.3s, transform 0.3s;
+}
+
+.course-item-enter {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.course-item-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+}
+
+.project-item-enter {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.project-item-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
 }
 
 .course-item:hover, .project-item:hover {
@@ -115,9 +186,14 @@
 }
 
 @keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
   to {
+    transform: translateX(0);
     opacity: 1;
-}
+  }
 }
 
 .logout-button {
@@ -128,11 +204,20 @@
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 18px;
-  transition: background-color 0.3s, transform 0.3s;
+  font-size: 16px;
+  transition: background-color 0.3s ease-in-out;
 }
 
 .logout-button:hover {
   background-color: #d32f2f;
-  transform: scale(1.1);
+}
+
+.completed-projects,
+.incoming-events {
+    margin-top: 20px;
+}
+
+.completed-projects h3,
+.incoming-events h3 {
+    margin-bottom: 10px;
 }

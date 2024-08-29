@@ -22,14 +22,23 @@ class Profile(models.Model):
     teaching_experience = models.IntegerField(null=True, blank=True)  # Years of experience
     subjects_of_expertise = models.ManyToManyField(Subject, blank=True)  # Expertise in subjects
     certifications = models.TextField(null=True, blank=True)  # Certifications or qualifications
-    last_active = models.DateTimeField(null=True, blank=True)
+    last_seen = models.DateTimeField(null=True, blank=True)
+    profile_pic = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
+    social_links = models.JSONField(null=True, blank=True)  # Store links as JSON, e.g., {"linkedin": "https://www.linkedin.com"}
 
     def __str__(self):
         return self.user.username
 
     def is_online(self):
-        if self.last_active:
-            return timezone.now() - self.last_active < timedelta(minutes=5)
+        if self.last_seen:
+            now = timezone.now()
+            online = now - self.last_seen < timedelta(minutes=5)
+            print("##########models#######")
+            print(f"Profile: {self.user.username} - Now: {now}, Last Seen: {self.last_seen}, Is Online: {online}")
+            return online
+        print("##########models#######")
+        print(f"Profile: {self.user.username} has no last_seen timestamp.")
+        print("##########update_last activite#######")
         return False
 
 
@@ -114,6 +123,21 @@ class Tasks(models.Model):
         self.save()
         self.project.update_completion_status()
 
+
+class TaskCompletion(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    task = models.ForeignKey(Tasks, on_delete=models.CASCADE)
+    is_completed = models.BooleanField(default=False)
+    completed_date = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ('user', 'task')
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.task.title}"
+
+
+
 class StudentProfile(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     points = models.PositiveIntegerField(default=0)
@@ -122,6 +146,7 @@ class StudentProfile(models.Model):
     completed_courses = models.ManyToManyField(Courses, related_name='completed_students', blank=True)
     current_projects = models.ManyToManyField(Projects, blank=True)
     skills = models.ManyToManyField(Subject, related_name='students', blank=True)
+    level = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.profile.user.username
@@ -142,6 +167,12 @@ class StudentProfile(models.Model):
             self.completed_courses.add(course)
             course.number_of_students_completed += 1
             course.save()
+            
+            # Activate the next course if it exists
+            next_course = Courses.objects.filter(id=course.id + 1).first()
+            if next_course:
+                next_course.is_active = True
+                next_course.save()
         else:
             raise ValidationError("You are not enrolled in this course.")
 

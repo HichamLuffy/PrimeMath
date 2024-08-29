@@ -1,40 +1,94 @@
+@import url('https://fonts.cdnfonts.com/css/casanova-scotia');
+
 .dashboard {
     padding: 20px;
-    background-color: rgba(28, 28, 28, 0.85);
+    /* background-color: rgba(28, 28, 28, 0.85); */
     border-radius: 8px;
-    max-width: 600px;
-    margin: 0 auto;
+    max-width: 1000px; /* Increase max-width for better card layout */
+    margin: 0;
     font-family: 'Casanova Scotia', sans-serif;
     color: #E5B174;
 }
 
 .user-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-.user-list li {
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 4px;
-    background-color: rgba(17, 16, 16, 0.9);
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background-color 0.3s ease-in-out;
-    border-left: 5px solid transparent;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
 }
 
-.user-list li.online {
-    border-left-color: #E5B174;
+.user-card {
+    background-color: rgba(17, 16, 16, 0.9);
+    border-radius: 8px;
+    padding: 15px;
+    flex: 1 1 calc(23.33% - 20px); /* 3 cards per row, with 20px gap */
+    max-width: calc(33.33% - 20px); /* 3 cards per row, with 20px gap */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease;
+    border-left: 5px solid transparent;
+    cursor: pointer;
+    backdrop-filter: blur(5px); /* Add blur effect to the background */
+}
+
+@media (max-width: 768px) {
+    .user-card {
+        flex: 1 1 calc(33.33% - 20px); /* 3 cards per row on smaller screens */
+        max-width: calc(33.33% - 20px);
+    }
+}
+
+@media (max-width: 480px) {
+    .user-card {
+        flex: 1 1 calc(100% - 20px); /* 1 card per row on extra small screens */
+        max-width: calc(100% - 20px);
+    }
+}
+
+.user-card:hover {
+    background-color: rgba(17, 16, 16, 0.7);
+    transform: translateY(-5px); /* Slight lift on hover */
+}
+
+.user-card.online {
+    border-left-color: green; /* Green for online status */
     color: #E5B174;
 }
 
-.user-list li.offline {
-    border-left-color: red;
+.user-card.offline {
+    border-left-color: red; /* Red for offline status */
     color: #999;
 }
 
-.user-list li:hover {
-    background-color: rgba(17, 16, 16, 0.7);
+.rank {
+    font-weight: bold;
+    color: #E5B174; /* Gold color for rank */
+    margin-bottom: 10px;
+    display: block;
+}
+
+.username {
+    display: block;
+    font-size: 1.2em;
+    margin-bottom: 8px;
+}
+
+.level {
+    font-style: italic;
+    color: #ccc;
+}
+
+@media (max-width: 768px) {
+    .user-card {
+        flex: 1 1 calc(50% - 40px); /* 2 cards per row on smaller screens */
+        max-width: calc(50% - 40px);
+    }
+}
+
+@media (max-width: 480px) {
+    .user-card {
+        flex: 1 1 calc(100% - 40px); /* 1 card per row on extra small screens */
+        max-width: calc(100% - 40px);
+    }
 }
